@@ -29,8 +29,8 @@ final class SACCI_Island_Settings {
             'text'              => '#183126',
             'radius'            => 18,
             'rail_width'        => 0,
-            'sidebar_width'     => 304,
-            'header_height'     => 76,
+            'sidebar_width'     => 264,
+            'header_height'     => 72,
             'compact'           => 0,
             'appearance_mode'   => 'light',
             'dashboard_welcome' => 1,
@@ -316,7 +316,7 @@ final class SACCI_Island_Settings {
                     <label>
                         <span><?php esc_html_e('Connected sidebar width', 'sacci-island-admin'); ?></span>
                         <strong data-sidebar-output><?php echo esc_html((string) absint($settings['sidebar_width'])); ?>px</strong>
-                        <input type="range" min="276" max="340" step="5" name="settings[sidebar_width]" value="<?php echo esc_attr((string) absint($settings['sidebar_width'])); ?>" data-sidebar-range>
+                        <input type="range" min="248" max="288" step="4" name="settings[sidebar_width]" value="<?php echo esc_attr((string) max(248, min(288, absint($settings['sidebar_width'])))); ?>" data-sidebar-range>
                     </label>
                 </div>
 
@@ -889,12 +889,12 @@ final class SACCI_Island_Settings {
         $clean['rail_width'] = 0;
 
         $clean['sidebar_width'] = isset($raw['sidebar_width'])
-            ? max(276, min(340, absint($raw['sidebar_width'])))
-            : absint($current['sidebar_width']);
+            ? max(248, min(288, absint($raw['sidebar_width'])))
+            : max(248, min(288, absint($current['sidebar_width'])));
 
         $clean['header_height'] = isset($raw['header_height'])
-            ? max(64, min(80, absint($raw['header_height'])))
-            : absint($current['header_height'] ?? 72);
+            ? max(68, min(76, absint($raw['header_height'])))
+            : max(68, min(76, absint($current['header_height'] ?? 72)));
 
         $clean['appearance_mode'] = 'light';
 
