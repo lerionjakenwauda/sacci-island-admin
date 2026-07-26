@@ -17,7 +17,6 @@
         if (
             !body ||
             !menuWrap ||
-            !toggleLink ||
             menuWrap.dataset.sacciConnectedReady === "true"
         ) {
             return;
@@ -27,6 +26,28 @@
         document.documentElement.style.colorScheme = "light";
         body.style.colorScheme = "light";
 
+        if (toggleLink) {
+            initialiseSidebar({
+                body,
+                menuWrap,
+                toggleNode,
+                toggleLink,
+                config
+            });
+        }
+
+        initialiseSubmenus();
+        initialiseAdminBarMenus();
+        initialiseCommandSearch(searchLink);
+    }
+
+    function initialiseSidebar({
+        body,
+        menuWrap,
+        toggleNode,
+        toggleLink,
+        config
+    }) {
         const backdrop = document.createElement("button");
         backdrop.type = "button";
         backdrop.className = "sacci-sidebar-backdrop";
@@ -98,16 +119,13 @@
                 window.innerWidth > 960 ||
                 !isSidebarOpen() ||
                 menuWrap.contains(event.target) ||
-                toggleNode.contains(event.target)
+                toggleNode?.contains(event.target)
             ) {
                 return;
             }
 
             setSidebar(false);
         });
-
-        initialiseSubmenus();
-        initialiseCommandSearch(searchLink);
     }
 
     function initialiseSubmenus() {
@@ -138,9 +156,11 @@
 
         function closeItem(item) {
             const button = item.querySelector(":scope > .sacci-submenu-toggle");
+            const link = item.querySelector(":scope > a.menu-top");
 
             item.classList.remove("sacci-submenu-open");
             button?.setAttribute("aria-expanded", "false");
+            link?.setAttribute("aria-expanded", "false");
         }
 
         function openItem(item) {
@@ -154,6 +174,9 @@
             item.classList.add("sacci-submenu-open");
             item
                 .querySelector(":scope > .sacci-submenu-toggle")
+                ?.setAttribute("aria-expanded", "true");
+            item
+                .querySelector(":scope > a.menu-top")
                 ?.setAttribute("aria-expanded", "true");
         }
 
@@ -176,10 +199,17 @@
 
             const label = getMenuLabel(link);
             const button = document.createElement("button");
+            const submenuId = submenu.id ||
+                `sacci-submenu-${items.indexOf(item) + 1}`;
 
+            submenu.id = submenuId;
+            link.setAttribute("aria-haspopup", "true");
+            link.setAttribute("aria-controls", submenuId);
+            link.setAttribute("aria-expanded", "false");
             button.type = "button";
             button.className = "sacci-submenu-toggle";
             button.setAttribute("aria-expanded", "false");
+            button.setAttribute("aria-controls", submenuId);
             button.setAttribute("aria-label", `Toggle ${label} submenu`);
             button.innerHTML = `
                 <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
@@ -190,10 +220,32 @@
             link.insertAdjacentElement("afterend", button);
             setSubmenuHeight(item);
 
+            /*
+             * A WordPress parent menu item (for example Plugins) duplicates its
+             * landing route as the first child. Treat the parent row as the
+             * accordion control so clicking it never leaves the current screen.
+             * The actual route remains available from the expanded submenu.
+             */
+            link.addEventListener("click", (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                toggleItem(item);
+            });
+
             button.addEventListener("click", (event) => {
                 event.preventDefault();
                 event.stopPropagation();
                 toggleItem(item);
+            });
+
+            link.addEventListener("keydown", (event) => {
+                if (event.key !== "ArrowDown") {
+                    return;
+                }
+
+                event.preventDefault();
+                openItem(item);
+                submenu.querySelector("a[href]")?.focus();
             });
         });
 
@@ -211,11 +263,123 @@
         window.addEventListener("resize", () => {
             items.forEach(setSubmenuHeight);
         });
+
+        menu.addEventListener("keydown", (event) => {
+            if (event.key !== "Escape") {
+                return;
+            }
+
+            const openItemNode = event.target.closest(
+                "li.sacci-submenu-open"
+            );
+
+            if (!openItemNode) {
+                return;
+            }
+
+            closeItem(openItemNode);
+            openItemNode.querySelector(":scope > a.menu-top")?.focus();
+        });
     }
 
     function getMenuLabel(link) {
         const name = link.querySelector(".wp-menu-name");
         return String(name?.textContent || link.textContent || "section").trim();
+    }
+
+    function initialiseAdminBarMenus() {
+        const adminBar = document.getElementById("wpadminbar");
+
+        if (!adminBar || adminBar.dataset.sacciMenusReady === "true") {
+            return;
+        }
+
+        adminBar.dataset.sacciMenusReady = "true";
+
+        const menus = Array.from(
+            adminBar.querySelectorAll(
+                ".ab-top-menu > li.menupop"
+            )
+        ).filter((item) =>
+            item.querySelector(":scope > .ab-item") &&
+            item.querySelector(":scope > .ab-sub-wrapper")
+        );
+
+        function closeMenu(item, restoreFocus = false) {
+            const trigger = item.querySelector(":scope > .ab-item");
+
+            item.classList.remove("sacci-adminbar-menu-open", "hover");
+            trigger?.setAttribute("aria-expanded", "false");
+
+            if (restoreFocus) {
+                trigger?.focus();
+            }
+        }
+
+        function openMenu(item) {
+            menus.forEach((candidate) => {
+                if (candidate !== item) {
+                    closeMenu(candidate);
+                }
+            });
+
+            item.classList.add("sacci-adminbar-menu-open");
+            item
+                .querySelector(":scope > .ab-item")
+                ?.setAttribute("aria-expanded", "true");
+        }
+
+        menus.forEach((item) => {
+            const trigger = item.querySelector(":scope > .ab-item");
+            const submenu = item.querySelector(":scope > .ab-sub-wrapper");
+
+            trigger.setAttribute("aria-haspopup", "true");
+            trigger.setAttribute("aria-expanded", "false");
+
+            trigger.addEventListener("click", (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                if (item.classList.contains("sacci-adminbar-menu-open")) {
+                    closeMenu(item);
+                    return;
+                }
+
+                openMenu(item);
+            });
+
+            trigger.addEventListener("keydown", (event) => {
+                if (event.key !== "ArrowDown") {
+                    return;
+                }
+
+                event.preventDefault();
+                openMenu(item);
+                submenu.querySelector("a[href]")?.focus();
+            });
+
+            submenu.addEventListener("click", (event) => {
+                event.stopPropagation();
+            });
+        });
+
+        document.addEventListener("click", () => {
+            menus.forEach((item) => closeMenu(item));
+        });
+
+        document.addEventListener("keydown", (event) => {
+            if (event.key !== "Escape") {
+                return;
+            }
+
+            const openMenuItem = menus.find((item) =>
+                item.classList.contains("sacci-adminbar-menu-open")
+            );
+
+            if (openMenuItem) {
+                closeMenu(openMenuItem, true);
+            }
+        });
     }
 
     function initialiseCommandSearch(searchLink) {
