@@ -1,5 +1,5 @@
 /* =========================================================
-   SACCI ISLAND ADMIN 2.1.1
+   SACCI ISLAND ADMIN 2.1.2
    Connected light administration shell
 ========================================================= */
 
@@ -55,6 +55,10 @@ body.sacci-island-admin[class*="dark"] {
     margin: 0;
     color: var(--sacci-text);
     background: var(--sacci-cream) !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-size: 13px;
+    line-height: 1.4;
 }
 
 body.sacci-island-admin,
@@ -121,6 +125,8 @@ body.sacci-island-admin #wpadminbar {
         linear-gradient(90deg, var(--sacci-ivory), var(--sacci-cream)) !important;
     box-shadow: 0 1px 0 var(--sacci-border);
     backdrop-filter: var(--sacci-frost);
+    font-family: inherit;
+    font-size: 13px;
 }
 
 body.sacci-island-admin #wpadminbar .quicklinks {
@@ -128,6 +134,20 @@ body.sacci-island-admin #wpadminbar .quicklinks {
     align-items: center;
     width: 100%;
     min-width: 0;
+}
+
+body.sacci-island-admin #wpadminbar ul,
+body.sacci-island-admin #wpadminbar ol,
+body.sacci-island-admin #adminmenu,
+body.sacci-island-admin #adminmenu ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+body.sacci-island-admin #wpadminbar a,
+body.sacci-island-admin #adminmenu a {
+    text-decoration: none;
 }
 
 body.sacci-island-admin #wpadminbar #wp-admin-bar-root-default,
@@ -152,13 +172,14 @@ body.sacci-island-admin #wpadminbar #wp-admin-bar-top-secondary {
 body.sacci-island-admin #wpadminbar .quicklinks,
 body.sacci-island-admin #wpadminbar .quicklinks > ul,
 body.sacci-island-admin #wpadminbar .quicklinks > ul > li,
-body.sacci-island-admin #wpadminbar .ab-item {
+body.sacci-island-admin #wpadminbar .quicklinks > ul > li > .ab-item {
     height: var(--sacci-admin-header);
     line-height: normal;
 }
 
 body.sacci-island-admin #wpadminbar .quicklinks > ul > li {
     display: flex;
+    position: relative;
     align-items: center;
     float: none;
 }
@@ -194,8 +215,16 @@ body.sacci-island-admin #wpadminbar:not(.mobile) .ab-top-menu > li > .ab-item:fo
 }
 
 body.sacci-island-admin #wpadminbar .ab-sub-wrapper {
+    display: none !important;
+    position: absolute;
+    z-index: 100000;
+    top: calc(100% - 8px);
+    left: 0;
+    width: max-content;
+    min-width: 220px;
+    height: auto;
     overflow: hidden;
-    margin-top: -8px;
+    margin-top: 0;
     padding: 8px;
     border: 1px solid var(--sacci-border);
     border-radius: 16px;
@@ -204,10 +233,38 @@ body.sacci-island-admin #wpadminbar .ab-sub-wrapper {
     backdrop-filter: var(--sacci-frost);
 }
 
+body.sacci-island-admin #wpadminbar #wp-admin-bar-top-secondary .ab-sub-wrapper {
+    right: 0;
+    left: auto;
+}
+
+body.sacci-island-admin #wpadminbar .menupop:hover > .ab-sub-wrapper,
+body.sacci-island-admin #wpadminbar .menupop.hover > .ab-sub-wrapper,
+body.sacci-island-admin #wpadminbar .menupop:focus-within > .ab-sub-wrapper {
+    display: block !important;
+}
+
+body.sacci-island-admin #wpadminbar .ab-submenu {
+    min-width: 204px;
+}
+
+body.sacci-island-admin #wpadminbar .ab-submenu li {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
 body.sacci-island-admin #wpadminbar .ab-submenu .ab-item {
+    display: flex;
+    width: 100%;
+    height: auto !important;
     min-height: 38px;
+    padding: 0 12px;
+    border-radius: 10px;
     color: var(--sacci-muted) !important;
     line-height: 38px;
+    text-decoration: none;
+    white-space: nowrap;
 }
 
 body.sacci-island-admin #wpadminbar .ab-submenu .ab-item:hover,
@@ -428,6 +485,7 @@ body.sacci-island-admin #adminmenu {
     margin: 0;
     padding: 18px 12px 30px;
     background: transparent !important;
+    font-family: inherit;
 }
 
 body.sacci-island-admin #adminmenu li {
@@ -1558,7 +1616,7 @@ body.index-php.sacci-island-admin #sacci_parish_dashboard .inside {
     body.sacci-island-admin #wpadminbar .quicklinks,
     body.sacci-island-admin #wpadminbar .quicklinks > ul,
     body.sacci-island-admin #wpadminbar .quicklinks > ul > li,
-    body.sacci-island-admin #wpadminbar .ab-item {
+    body.sacci-island-admin #wpadminbar .quicklinks > ul > li > .ab-item {
         height: var(--sacci-admin-header);
         line-height: var(--sacci-admin-header);
     }

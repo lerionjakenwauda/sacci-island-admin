@@ -195,15 +195,6 @@
                 event.stopPropagation();
                 toggleItem(item);
             });
-
-            button.addEventListener("keydown", (event) => {
-                if (event.key !== "Enter" && event.key !== " ") {
-                    return;
-                }
-
-                event.preventDefault();
-                toggleItem(item);
-            });
         });
 
         const current = items.find((item) =>
