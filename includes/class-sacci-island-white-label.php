@@ -8,6 +8,55 @@ final class SACCI_Island_White_Label {
     private const ADMIN_QUERY = 'sacci_admin_path';
     private const LOGIN_QUERY = 'sacci_login_alias';
     private const ASSET_QUERY = 'sacci_asset_path';
+    private const NATIVE_ADMIN_ENDPOINTS = [
+        'admin-ajax.php',
+        'admin-post.php',
+        'async-upload.php',
+        'load-scripts.php',
+        'load-styles.php',
+    ];
+    private const STATIC_ASSET_EXTENSIONS = [
+        'avif',
+        'avi',
+        'bmp',
+        'css',
+        'csv',
+        'doc',
+        'docx',
+        'eot',
+        'gif',
+        'ico',
+        'jpeg',
+        'jpg',
+        'js',
+        'json',
+        'm4a',
+        'm4v',
+        'map',
+        'mov',
+        'mp3',
+        'mjs',
+        'mp4',
+        'ogg',
+        'otf',
+        'pdf',
+        'png',
+        'ppt',
+        'pptx',
+        'rtf',
+        'svg',
+        'ttf',
+        'txt',
+        'wav',
+        'webm',
+        'webp',
+        'woff',
+        'woff2',
+        'xls',
+        'xlsx',
+        'xml',
+        'zip',
+    ];
 
     public static function hooks(): void {
         add_action('init', [__CLASS__, 'rewrite_rules']);
@@ -156,16 +205,50 @@ final class SACCI_Island_White_Label {
             return $html;
         }
 
+        /*
+         * WordPress prints its concatenated admin CSS and JavaScript through
+         * wp-admin/load-styles.php and wp-admin/load-scripts.php. Rewriting
+         * either URL to the friendly admin route returns an HTML redirect
+         * instead of the requested asset and leaves wp-admin as unstyled HTML.
+         *
+         * Protect every native runtime endpoint before applying the public
+         * aliases, then restore the original URLs after the replacement pass.
+         */
+        $protected = [];
+        $admin_bases = array_values(array_unique([
+            home_url('/wp-admin/'),
+            site_url('/wp-admin/'),
+            '/wp-admin/',
+        ]));
+
+        foreach ($admin_bases as $base) {
+            foreach (self::NATIVE_ADMIN_ENDPOINTS as $endpoint) {
+                $url = $base . $endpoint;
+
+                if (!str_contains($html, $url)) {
+                    continue;
+                }
+
+                $token = '___SACCI_NATIVE_ADMIN_' . count($protected) . '___';
+                $protected[$token] = $url;
+                $html = str_replace($url, $token, $html);
+            }
+        }
+
         $replacements = [
             home_url('/wp-admin/')   => home_url('/sacci-admin/'),
             site_url('/wp-admin/')   => home_url('/sacci-admin/'),
-            plugins_url()            => home_url('/sacci-plugins/'),
+            plugins_url()            => untrailingslashit(home_url('/sacci-plugins/')),
             includes_url()           => home_url('/sacci-core/'),
-            content_url()            => home_url('/sacci-assets/'),
+            content_url()            => untrailingslashit(home_url('/sacci-assets/')),
             site_url('/wp-login.php') => home_url('/sacci-login/'),
         ];
 
-        return str_replace(array_keys($replacements), array_values($replacements), $html);
+        $html = str_replace(array_keys($replacements), array_values($replacements), $html);
+
+        return $protected
+            ? str_replace(array_keys($protected), array_values($protected), $html)
+            : $html;
     }
 
     private static function serve_login_alias(string $action): void {
@@ -201,15 +284,21 @@ final class SACCI_Island_White_Label {
             realpath(WP_PLUGIN_DIR),
         ]);
 
-        if (!$real || !is_file($real) || !self::is_allowed_file($real, $allowed)) {
+        if (
+            !$real ||
+            !is_file($real) ||
+            !self::is_allowed_file($real, $allowed) ||
+            !self::is_static_asset($real)
+        ) {
             status_header(404);
             exit;
         }
 
         $mime = wp_check_filetype($real);
-        $type = $mime['type'] ?: 'application/octet-stream';
+        $type = $mime['type'] ?: self::fallback_content_type($real);
 
         header('Content-Type: ' . $type);
+        header('X-Content-Type-Options: nosniff');
         header('Cache-Control: public, max-age=31536000, immutable');
         readfile($real);
         exit;
@@ -245,21 +334,52 @@ final class SACCI_Island_White_Label {
     private static function is_native_admin_endpoint(string $path): bool {
         $path = ltrim($path, '/');
 
-        return $path === '' ||
-            str_starts_with($path, 'admin-ajax.php') ||
-            str_starts_with($path, 'admin-post.php') ||
-            str_starts_with($path, 'async-upload.php') ||
-            str_starts_with($path, 'load-scripts.php') ||
-            str_starts_with($path, 'load-styles.php');
-    }
+        if ($path === '') {
+            return true;
+        }
 
-    private static function is_allowed_file(string $file, array $roots): bool {
-        foreach ($roots as $root) {
-            if ($root && str_starts_with($file, $root)) {
+        foreach (self::NATIVE_ADMIN_ENDPOINTS as $endpoint) {
+            if (str_starts_with($path, $endpoint)) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    private static function is_allowed_file(string $file, array $roots): bool {
+        $file = wp_normalize_path($file);
+
+        foreach ($roots as $root) {
+            if (
+                $root &&
+                str_starts_with(
+                    $file,
+                    trailingslashit(wp_normalize_path($root))
+                )
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static function is_static_asset(string $file): bool {
+        $extension = strtolower((string) pathinfo($file, PATHINFO_EXTENSION));
+        return in_array($extension, self::STATIC_ASSET_EXTENSIONS, true);
+    }
+
+    private static function fallback_content_type(string $file): string {
+        return match (strtolower((string) pathinfo($file, PATHINFO_EXTENSION))) {
+            'css'  => 'text/css; charset=UTF-8',
+            'js',
+            'mjs'  => 'application/javascript; charset=UTF-8',
+            'map'  => 'application/json; charset=UTF-8',
+            'svg'  => 'image/svg+xml',
+            'woff' => 'font/woff',
+            'woff2'=> 'font/woff2',
+            default => 'application/octet-stream',
+        };
     }
 }

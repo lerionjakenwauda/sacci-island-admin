@@ -30,7 +30,7 @@ final class SACCI_Island_Settings {
             'radius'            => 18,
             'rail_width'        => 0,
             'sidebar_width'     => 304,
-            'header_height'     => 94,
+            'header_height'     => 76,
             'compact'           => 0,
             'appearance_mode'   => 'light',
             'dashboard_welcome' => 1,

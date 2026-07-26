@@ -1,4 +1,4 @@
-# SACCI Parish Administration Suite 2.1.1
+# SACCI Parish Administration Suite 2.1.2
 
 The approved parish administration interface for St. Augustine's Catholic Church, MaryHill, Ikorodu.
 
@@ -50,9 +50,15 @@ The replacement Parish Overview includes:
 
 ## Install
 
-Upload `sacci-island-admin-v2.1.1.zip` through WordPress and choose **Replace current with uploaded**.
+Upload `sacci-island-admin-v2.1.2.zip` through WordPress and choose **Replace current with uploaded**.
 
 Then clear all cache and hard-refresh the administration area.
+
+## Releases
+
+Every versioned push to `main` is linted, tested, packaged with the
+`sacci-island-admin/` root directory and published as a GitHub release.
+WordPress reads that release and downloads the attached ZIP automatically.
 
 ## Developer
 
