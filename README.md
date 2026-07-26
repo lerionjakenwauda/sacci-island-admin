@@ -1,17 +1,20 @@
-# SACCI Parish Administration Suite 2.1.3
+# SACCI Parish Administration Suite 2.1.4
 
 The approved parish administration interface for St. Augustine's Catholic Church, MaryHill, Ikorodu.
 
 ## Approved shell
 
 - Fixed light mode
-- One connected warm ivory header and ivory sidebar
+- One continuous warm ivory header and sidebar shell
 - No detached navigation island
 - No forced dark mode
 - Sidebar opens and closes from the header
 - Main workspace expands when the sidebar is closed
 - Mobile sidebar becomes an overlay drawer
-- Parish mark and name appear in the header
+- The supplied parish wordmark appears in the header
+- WordPress parent menu rows toggle their submenu instead of navigating
+- New and profile menus open on click and close outside or with Escape
+- Native screens sit inside one large rounded content surface
 - Vendor shortcuts are removed from the top bar
 - Ctrl+K opens the administration command search
 
@@ -50,7 +53,7 @@ The replacement Parish Overview includes:
 
 ## Install
 
-Upload `sacci-island-admin-v2.1.3.zip` through WordPress and choose **Replace current with uploaded**.
+Upload `sacci-island-admin-v2.1.4.zip` through WordPress and choose **Replace current with uploaded**.
 
 Then clear all cache and hard-refresh the administration area.
 

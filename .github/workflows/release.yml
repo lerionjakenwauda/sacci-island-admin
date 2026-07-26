@@ -89,6 +89,9 @@ jobs:
       - name: Run updater cache regression checks
         run: php tests/updater-cache-test.php
 
+      - name: Run admin shell contract checks
+        run: php tests/admin-shell-contract-test.php
+
       - name: Check JavaScript syntax
         run: |
           node --check assets/js/admin-islands.js

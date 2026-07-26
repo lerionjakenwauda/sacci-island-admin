@@ -1,0 +1,218 @@
+<!doctype html>
+<html class="wp-toolbar" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SACCI admin shell fixture</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        .screen-reader-text {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+        }
+
+        .dashicons {
+            display: inline-grid;
+            width: 20px;
+            height: 20px;
+            place-items: center;
+        }
+
+        .dashicons::before {
+            content: "◆";
+            font-size: 12px;
+        }
+
+        .wp-list-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .wp-list-table th,
+        .wp-list-table td {
+            padding: 15px;
+            border-bottom: 1px solid #dce5db;
+            text-align: left;
+        }
+
+        .tablenav {
+            display: flex;
+            justify-content: space-between;
+            margin: 18px 0 10px;
+        }
+    </style>
+    <link rel="stylesheet" href="../../assets/css/admin-islands.css">
+</head>
+<body class="wp-admin wp-core-ui sacci-island-admin sacci-connected-light-shell sacci-sidebar-open plugins-php">
+    <div id="wpwrap">
+        <div id="wpadminbar">
+            <div class="quicklinks">
+                <ul id="wp-admin-bar-root-default" class="ab-top-menu">
+                    <li id="wp-admin-bar-sacci-sidebar-toggle">
+                        <a class="ab-item" href="#">
+                            <span class="sacci-sidebar-toggle-icon">
+                                <svg viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"></path></svg>
+                            </span>
+                        </a>
+                    </li>
+                    <li id="wp-admin-bar-sacci-island-brand">
+                        <a class="ab-item" href="#">
+                            <span class="sacci-adminbar-lockup">
+                                <span class="sacci-adminbar-logo">
+                                    <img class="sacci-adminbar-wordmark" src="../../assets/images/parish-logo.png" alt="">
+                                    <img class="sacci-adminbar-mark" src="../../assets/images/parish-mark.png" alt="">
+                                </span>
+                                <span class="sacci-adminbar-context">Admin</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li id="wp-admin-bar-new-content" class="menupop">
+                        <a class="ab-item" href="post-new.php"><span class="ab-label">New</span></a>
+                        <div class="ab-sub-wrapper">
+                            <ul class="ab-submenu">
+                                <li><a class="ab-item" href="post-new.php?post_type=page">Page</a></li>
+                                <li><a class="ab-item" href="media-new.php">Media</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+
+                <ul id="wp-admin-bar-top-secondary" class="ab-top-menu">
+                    <li id="wp-admin-bar-sacci-admin-search">
+                        <a class="ab-item" href="#">
+                            <span class="sacci-admin-search-icon">
+                                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+                            </span>
+                            <span class="ab-label">Search</span>
+                        </a>
+                    </li>
+                    <li id="wp-admin-bar-sacci-admin-notifications">
+                        <a class="ab-item" href="#">
+                            <span class="sacci-notification-icon">
+                                <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path></svg>
+                                <i></i>
+                            </span>
+                        </a>
+                    </li>
+                    <li id="wp-admin-bar-my-account" class="menupop">
+                        <a class="ab-item" href="profile.php">
+                            <span class="display-name">LJNDI</span>
+                            <img class="avatar" src="../../assets/images/parish-mark.png" alt="">
+                        </a>
+                        <div class="ab-sub-wrapper">
+                            <ul class="ab-submenu">
+                                <li><a class="ab-item" href="profile.php">Edit profile</a></li>
+                                <li><a class="ab-item" href="#">Log out</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="adminmenuwrap">
+            <ul id="adminmenu">
+                <li class="menu-top">
+                    <a class="menu-top" href="index.php">
+                        <div class="wp-menu-image dashicons-before dashicons-dashboard"></div>
+                        <div class="wp-menu-name">Parish Overview</div>
+                    </a>
+                </li>
+                <li class="menu-top wp-has-submenu wp-has-current-submenu">
+                    <a class="menu-top wp-has-current-submenu" href="plugins.php">
+                        <div class="wp-menu-image dashicons-before dashicons-admin-plugins"></div>
+                        <div class="wp-menu-name">Plugins</div>
+                    </a>
+                    <ul class="wp-submenu">
+                        <li class="current"><a href="plugins.php">Installed Plugins</a></li>
+                        <li><a href="plugin-install.php">Add Plugin</a></li>
+                        <li><a href="plugin-editor.php">Plugin File Editor</a></li>
+                    </ul>
+                </li>
+                <li class="menu-top wp-has-submenu">
+                    <a class="menu-top" href="themes.php">
+                        <div class="wp-menu-image dashicons-before dashicons-admin-appearance"></div>
+                        <div class="wp-menu-name">Theme Settings</div>
+                    </a>
+                    <ul class="wp-submenu">
+                        <li><a href="themes.php">Themes</a></li>
+                        <li><a href="customize.php">Customize</a></li>
+                    </ul>
+                </li>
+                <li class="menu-top wp-has-submenu">
+                    <a class="menu-top" href="admin.php?page=gosmtp">
+                        <div class="wp-menu-image dashicons-before dashicons-email"></div>
+                        <div class="wp-menu-name">GoSMTP</div>
+                    </a>
+                    <ul class="wp-submenu">
+                        <li><a href="#">Email settings</a></li>
+                    </ul>
+                </li>
+                <li class="menu-top">
+                    <a class="menu-top" href="#">
+                        <div class="wp-menu-image dashicons-before dashicons-shield"></div>
+                        <div class="wp-menu-name">Loginizer Security</div>
+                    </a>
+                </li>
+                <li class="menu-top">
+                    <a class="menu-top" href="#">
+                        <div class="wp-menu-image dashicons-before dashicons-admin-generic"></div>
+                        <div class="wp-menu-name">Island Admin</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div id="wpcontent">
+            <div id="wpbody">
+                <div id="wpbody-content">
+                    <div class="wrap">
+                        <h1>Plugins <a class="page-title-action" href="#">Add Plugin</a></h1>
+                        <p class="subsubsub">All (35) | Active (25) | Inactive (10) | Recently Active (5)</p>
+                        <div class="tablenav">
+                            <span>Bulk actions &nbsp; <button>Apply</button></span>
+                            <label>Search installed plugins <input type="search"></label>
+                        </div>
+                        <table class="wp-list-table widefat plugins">
+                            <thead>
+                                <tr><th>Plugin</th><th>Description</th><th>Automatic Updates</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr class="active"><td><strong>Backuply</strong><br>Deactivate</td><td>Backups and recovery for the parish website.</td><td>Enable auto-updates</td></tr>
+                                <tr><td><strong>Akismet Anti-spam</strong><br>Activate | Delete</td><td>Spam protection for comments and forms.</td><td>Enable auto-updates</td></tr>
+                                <tr class="active"><td><strong>SACCI Parish Events</strong><br>Deactivate</td><td>Manage upcoming parish events.</td><td>Enable auto-updates</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="wpfooter"><p>Developed by LJNDI</p><p>St. Augustine MaryHill Parish</p></div>
+        </div>
+    </div>
+
+    <script>
+        window.SACCIIslandAdmin = {
+            storageKey: "sacci_fixture_sidebar",
+            openLabel: "Open navigation",
+            closeLabel: "Close navigation"
+        };
+    </script>
+    <script src="../../assets/js/admin-islands.js"></script>
+</body>
+</html>

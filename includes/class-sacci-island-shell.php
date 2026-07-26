@@ -19,6 +19,15 @@ final class SACCI_Island_Shell {
         $settings = SACCI_Island_Settings::get();
         $style_path = SACCI_ISLAND_DIR . 'assets/css/admin-islands.css';
         $script_path = SACCI_ISLAND_DIR . 'assets/js/admin-islands.js';
+        $radius = max(16, min(28, absint($settings['radius'] ?? 20)));
+        $sidebar_width = max(
+            248,
+            min(288, absint($settings['sidebar_width'] ?? 264))
+        );
+        $header_height = max(
+            68,
+            min(76, absint($settings['header_height'] ?? 72))
+        );
 
         wp_enqueue_style(
             'sacci-island-admin-shell',
@@ -40,10 +49,22 @@ final class SACCI_Island_Shell {
                 --sacci-admin-radius:%1$dpx;
                 --sacci-admin-sidebar:%2$dpx;
                 --sacci-admin-header:%3$dpx;
+                --sacci-green:%4$s;
+                --sacci-green-deep:%5$s;
+                --sacci-gold:%6$s;
+                --sacci-cream:%7$s;
+                --sacci-ivory:%8$s;
+                --sacci-text:%9$s;
             }',
-            absint($settings['radius']),
-            absint($settings['sidebar_width']),
-            absint($settings['header_height'])
+            $radius,
+            $sidebar_width,
+            $header_height,
+            self::colour($settings, 'primary', '#0B5D2A'),
+            self::colour($settings, 'primary_deep', '#073E1C'),
+            self::colour($settings, 'accent', '#D99518'),
+            self::colour($settings, 'surface', '#F3F0E3'),
+            self::colour($settings, 'card', '#FFFDF7'),
+            self::colour($settings, 'text', '#183126')
         );
 
         wp_add_inline_style('sacci-island-admin-shell', $variables);
@@ -66,6 +87,15 @@ final class SACCI_Island_Shell {
 
     private static function asset_version(string $path): string {
         return SACCI_ISLAND_VERSION . '.' . (file_exists($path) ? (string) filemtime($path) : '0');
+    }
+
+    private static function colour(
+        array $settings,
+        string $key,
+        string $fallback
+    ): string {
+        $colour = sanitize_hex_color((string) ($settings[$key] ?? ''));
+        return $colour ?: $fallback;
     }
 
     public static function body_class(string $classes): string {
@@ -112,7 +142,8 @@ final class SACCI_Island_Shell {
 
     public static function build_admin_bar(WP_Admin_Bar $admin_bar): void {
         $settings = SACCI_Island_Settings::get();
-        $logo_url = SACCI_Island_Settings::logo_url($settings);
+        $mark_url = SACCI_Island_Settings::logo_url($settings);
+        $wordmark_url = SACCI_ISLAND_URL . 'assets/images/parish-logo.png';
 
         $admin_bar->add_node([
             'id'     => 'sacci-sidebar-toggle',
@@ -138,19 +169,24 @@ final class SACCI_Island_Shell {
             'parent' => false,
             'title'  =>
                 '<span class="sacci-adminbar-lockup">' .
-                    '<span class="sacci-adminbar-mark" aria-hidden="true">' .
-                        '<img src="' . esc_url($logo_url) . '" alt="">' .
+                    '<span class="sacci-adminbar-logo" aria-hidden="true">' .
+                        '<img class="sacci-adminbar-wordmark" src="' .
+                            esc_url($wordmark_url) . '" alt="">' .
+                        '<img class="sacci-adminbar-mark" src="' .
+                            esc_url($mark_url) . '" alt="">' .
                     '</span>' .
-                    '<span>' .
-                        '<strong>' . esc_html((string) $settings['brand_name']) . '</strong>' .
-                        '<small>' . esc_html((string) $settings['brand_tagline']) . '</small>' .
-                        '<em>' . esc_html__('SACCI Admin', 'sacci-island-admin') . '</em>' .
+                    '<span class="sacci-adminbar-context">' .
+                        esc_html__('Admin', 'sacci-island-admin') .
+                    '</span>' .
+                    '<span class="screen-reader-text">' .
+                        esc_html((string) $settings['brand_name']) . ' — ' .
+                        esc_html((string) $settings['brand_tagline']) .
                     '</span>' .
                 '</span>',
-            'href'   => home_url('/'),
+            'href'   => admin_url('index.php'),
             'meta'   => [
                 'class' => 'sacci-island-adminbar-brand',
-                'title' => esc_attr((string) $settings['brand_name']),
+                'title' => esc_attr__('Go to Parish Overview', 'sacci-island-admin'),
             ],
         ]);
 
