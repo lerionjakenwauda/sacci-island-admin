@@ -1,0 +1,1682 @@
+/* =========================================================
+   SACCI ISLAND ADMIN 2.1.0
+   Connected light administration shell
+========================================================= */
+
+:root {
+    --sacci-green: #0B5D2A;
+    --sacci-green-deep: #073E1C;
+    --sacci-gold: #D99518;
+    --sacci-gold-soft: #F8E8BF;
+    --sacci-cream: #F3F0E3;
+    --sacci-ivory: #FFFDF7;
+    --sacci-pale-green: #EDF4EC;
+    --sacci-border: #DCE5DB;
+    --sacci-text: #183126;
+    --sacci-muted: #637268;
+    --sacci-danger: #B7352F;
+    --sacci-info: #2A648E;
+    --sacci-violet: #624889;
+    --sacci-frost: blur(18px) saturate(1.12);
+    --sacci-shadow-soft: 0 14px 34px color-mix(in srgb, var(--sacci-green-deep) 10%, transparent);
+    --sacci-shadow-panel: 0 10px 24px color-mix(in srgb, var(--sacci-green-deep) 8%, transparent);
+    --sacci-shadow-drawer: 18px 0 46px color-mix(in srgb, var(--sacci-green-deep) 20%, transparent);
+    --sacci-admin-radius: 16px;
+    --sacci-admin-sidebar: 286px;
+    --sacci-admin-header: 78px;
+    --sacci-admin-primary: var(--sacci-green);
+    --sacci-admin-primary-deep: var(--sacci-green-deep);
+    --sacci-admin-accent: var(--sacci-gold);
+    --sacci-admin-surface: var(--sacci-cream);
+    --sacci-admin-card: var(--sacci-ivory);
+    --sacci-admin-text: var(--sacci-text);
+    --wp-admin-theme-color: var(--sacci-green);
+    --wp-admin-theme-color-darker-10: var(--sacci-green-deep);
+    --wp-admin-theme-color-darker-20: var(--sacci-green-deep);
+}
+
+html:has(body.sacci-island-admin),
+body.sacci-island-admin {
+    color-scheme: light !important;
+    background: var(--sacci-cream) !important;
+}
+
+body.sacci-island-admin,
+body.sacci-island-admin.darkify-admin,
+body.sacci-island-admin[class*="dark"] {
+    --darkify-admin-background: var(--sacci-cream) !important;
+    --darkify-admin-bg: var(--sacci-cream) !important;
+    --darkify-background-color: var(--sacci-cream) !important;
+    --darkify-card-background: var(--sacci-ivory) !important;
+    --darkify-surface-color: var(--sacci-ivory) !important;
+    --darkify-text-color: var(--sacci-text) !important;
+    --darkify-border-color: var(--sacci-border) !important;
+    min-width: 0;
+    margin: 0;
+    color: var(--sacci-text);
+    background: var(--sacci-cream) !important;
+}
+
+body.sacci-island-admin,
+body.sacci-island-admin * {
+    box-sizing: border-box;
+}
+
+body.sacci-island-admin ::selection {
+    color: var(--sacci-ivory);
+    background: var(--sacci-green);
+}
+
+body.sacci-island-admin ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+body.sacci-island-admin ::-webkit-scrollbar-track {
+    background: var(--sacci-cream);
+}
+
+body.sacci-island-admin ::-webkit-scrollbar-thumb {
+    border: 3px solid var(--sacci-cream);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--sacci-muted) 45%, var(--sacci-ivory));
+}
+
+body.sacci-island-admin ::-webkit-scrollbar-thumb:hover {
+    background: var(--sacci-muted);
+}
+
+html.wp-toolbar,
+body.sacci-island-admin {
+    height: 100%;
+    overflow: hidden;
+}
+
+body.sacci-island-admin #wpwrap {
+    min-height: 100dvh;
+    overflow: hidden;
+    background: var(--sacci-cream) !important;
+}
+
+/* =========================================================
+   Header
+========================================================= */
+
+body.sacci-island-admin #wpadminbar {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    z-index: 99999;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: auto;
+    min-width: 0;
+    height: var(--sacci-admin-header);
+    padding: 0 18px;
+    border: 0;
+    border-bottom: 1px solid var(--sacci-border);
+    color: var(--sacci-text);
+    background:
+        linear-gradient(90deg, var(--sacci-ivory), var(--sacci-cream)) !important;
+    box-shadow: 0 1px 0 var(--sacci-border);
+    backdrop-filter: var(--sacci-frost);
+}
+
+body.sacci-island-admin #wpadminbar .quicklinks {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+}
+
+body.sacci-island-admin #wpadminbar #wp-admin-bar-root-default,
+body.sacci-island-admin #wpadminbar #wp-admin-bar-top-secondary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: var(--sacci-admin-header);
+    min-width: 0;
+    float: none;
+}
+
+body.sacci-island-admin #wpadminbar #wp-admin-bar-root-default {
+    flex: 1 1 auto;
+}
+
+body.sacci-island-admin #wpadminbar #wp-admin-bar-top-secondary {
+    flex: 0 0 auto;
+    margin-left: auto;
+}
+
+body.sacci-island-admin #wpadminbar .quicklinks,
+body.sacci-island-admin #wpadminbar .quicklinks > ul,
+body.sacci-island-admin #wpadminbar .quicklinks > ul > li,
+body.sacci-island-admin #wpadminbar .ab-item {
+    height: var(--sacci-admin-header);
+    line-height: normal;
+}
+
+body.sacci-island-admin #wpadminbar .quicklinks > ul > li {
+    display: flex;
+    align-items: center;
+    float: none;
+}
+
+body.sacci-island-admin #wpadminbar .ab-item {
+    display: inline-flex;
+    align-items: center;
+}
+
+body.sacci-island-admin #wpadminbar .ab-item,
+body.sacci-island-admin #wpadminbar a.ab-item,
+body.sacci-island-admin #wpadminbar .ab-empty-item {
+    color: var(--sacci-text) !important;
+}
+
+body.sacci-island-admin #wpadminbar .ab-label,
+body.sacci-island-admin #wpadminbar .display-name,
+body.sacci-island-admin #wpadminbar .username {
+    color: var(--sacci-green-deep) !important;
+}
+
+body.sacci-island-admin #wpadminbar .ab-icon::before,
+body.sacci-island-admin #wpadminbar .ab-item::before {
+    color: currentColor !important;
+}
+
+body.sacci-island-admin #wpadminbar .ab-top-menu > li:hover > .ab-item,
+body.sacci-island-admin #wpadminbar .ab-top-menu > li.hover > .ab-item,
+body.sacci-island-admin #wpadminbar:not(.mobile) .ab-top-menu > li > .ab-item:focus {
+    color: var(--sacci-green) !important;
+    background: var(--sacci-pale-green) !important;
+    border-radius: 999px;
+}
+
+body.sacci-island-admin #wpadminbar .ab-sub-wrapper {
+    overflow: hidden;
+    margin-top: -8px;
+    padding: 8px;
+    border: 1px solid var(--sacci-border);
+    border-radius: 16px;
+    background: var(--sacci-ivory) !important;
+    box-shadow: var(--sacci-shadow-soft);
+    backdrop-filter: var(--sacci-frost);
+}
+
+body.sacci-island-admin #wpadminbar .ab-submenu .ab-item {
+    min-height: 38px;
+    color: var(--sacci-muted) !important;
+    line-height: 38px;
+}
+
+body.sacci-island-admin #wpadminbar .ab-submenu .ab-item:hover,
+body.sacci-island-admin #wpadminbar .ab-submenu .ab-item:focus {
+    color: var(--sacci-green) !important;
+    background: var(--sacci-pale-green) !important;
+}
+
+body.sacci-island-admin #wp-admin-bar-sacci-sidebar-toggle {
+    margin-right: 12px;
+}
+
+body.sacci-island-admin #wp-admin-bar-sacci-sidebar-toggle > .ab-item {
+    display: grid;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    padding: 0;
+    border: 1px solid var(--sacci-border);
+    border-radius: 50%;
+    background: var(--sacci-ivory) !important;
+}
+
+body.sacci-island-admin .sacci-sidebar-toggle-icon,
+body.sacci-island-admin .sacci-admin-search-icon,
+body.sacci-island-admin .sacci-notification-icon {
+    position: relative;
+    display: grid;
+    place-items: center;
+}
+
+body.sacci-island-admin .sacci-sidebar-toggle-icon {
+    width: 24px;
+    height: 24px;
+}
+
+body.sacci-island-admin .sacci-sidebar-toggle-icon svg,
+body.sacci-island-admin .sacci-admin-search-icon svg,
+body.sacci-island-admin .sacci-notification-icon svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.9;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+body.sacci-island-admin #wp-admin-bar-sacci-island-brand {
+    margin-right: 18px;
+}
+
+body.sacci-island-admin #wp-admin-bar-sacci-island-brand > .ab-item {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    background: transparent !important;
+}
+
+body.sacci-island-admin .sacci-adminbar-lockup {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 310px;
+}
+
+body.sacci-island-admin .sacci-adminbar-mark {
+    display: grid;
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    overflow: hidden;
+    place-items: center;
+    border: 1px solid var(--sacci-border);
+    border-radius: 50%;
+    background-color: var(--sacci-ivory);
+    box-shadow: inset 0 0 0 4px var(--sacci-ivory);
+}
+
+body.sacci-island-admin .sacci-adminbar-mark img {
+    display: block;
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+    object-fit: contain;
+}
+
+body.sacci-island-admin .sacci-adminbar-lockup > span:last-child {
+    min-width: 0;
+}
+
+body.sacci-island-admin .sacci-adminbar-lockup strong,
+body.sacci-island-admin .sacci-adminbar-lockup small,
+body.sacci-island-admin .sacci-adminbar-lockup em {
+    display: block;
+    overflow: hidden;
+    max-width: 260px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+body.sacci-island-admin .sacci-adminbar-lockup strong {
+    color: var(--sacci-green-deep);
+    font-size: 15px;
+    font-weight: 780;
+    line-height: 1.18;
+}
+
+body.sacci-island-admin .sacci-adminbar-lockup small {
+    margin-top: 4px;
+    color: var(--sacci-gold);
+    font-size: 10px;
+    font-weight: 820;
+    line-height: 1;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+body.sacci-island-admin .sacci-adminbar-lockup em {
+    margin-top: 4px;
+    color: var(--sacci-muted);
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 760;
+    line-height: 1;
+}
+
+body.sacci-island-admin #wp-admin-bar-sacci-admin-search > .ab-item,
+body.sacci-island-admin #wp-admin-bar-sacci-admin-notifications > .ab-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 0 13px;
+    border-radius: 999px;
+    color: var(--sacci-green-deep) !important;
+    background: var(--sacci-ivory) !important;
+}
+
+body.sacci-island-admin #wp-admin-bar-new-content > .ab-item,
+body.sacci-island-admin #wp-admin-bar-my-account > .ab-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 0 13px;
+    border: 1px solid var(--sacci-border);
+    border-radius: 999px;
+    color: var(--sacci-green-deep) !important;
+    background: var(--sacci-ivory) !important;
+}
+
+body.sacci-island-admin #wp-admin-bar-my-account .avatar {
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--sacci-border);
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+body.sacci-island-admin #wp-admin-bar-new-content > .ab-item::before,
+body.sacci-island-admin #wp-admin-bar-my-account > .ab-item::before {
+    color: var(--sacci-green) !important;
+}
+
+body.sacci-island-admin .sacci-notification-icon i {
+    position: absolute;
+    top: 1px;
+    right: 0;
+    width: 8px;
+    height: 8px;
+    border: 2px solid var(--sacci-ivory);
+    border-radius: 50%;
+    background: var(--sacci-gold);
+}
+
+/* =========================================================
+   Sidebar
+========================================================= */
+
+body.sacci-island-admin #adminmenuback {
+    display: none;
+}
+
+body.sacci-island-admin #adminmenuwrap {
+    position: fixed;
+    z-index: 9993;
+    top: var(--sacci-admin-header);
+    bottom: 0;
+    left: 0;
+    width: var(--sacci-admin-sidebar);
+    overflow-x: hidden;
+    overflow-y: auto;
+    border: 0;
+    border-right: 1px solid var(--sacci-border);
+    border-radius: 0;
+    color: var(--sacci-text);
+    background:
+        linear-gradient(180deg, var(--sacci-ivory), var(--sacci-cream)) !important;
+    box-shadow: none;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate3d(-100%, 0, 0);
+    transition:
+        transform 240ms cubic-bezier(.2, .8, .2, 1),
+        opacity 170ms ease;
+    scrollbar-width: thin;
+    scrollbar-color: var(--sacci-muted) transparent;
+}
+
+body.sacci-island-admin.sacci-sidebar-open #adminmenuwrap {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate3d(0, 0, 0);
+}
+
+body.sacci-island-admin #adminmenu {
+    width: 100%;
+    margin: 0;
+    padding: 18px 12px 30px;
+    background: transparent !important;
+}
+
+body.sacci-island-admin #adminmenu li {
+    margin: 3px 0;
+    background: transparent !important;
+}
+
+body.sacci-island-admin #adminmenu li.wp-menu-separator {
+    height: 14px;
+    margin: 0;
+    background: transparent !important;
+}
+
+body.sacci-island-admin #adminmenu li.menu-top {
+    position: relative;
+    min-height: 46px;
+    border: 0;
+    background: transparent !important;
+}
+
+body.sacci-island-admin #adminmenu li.wp-has-current-submenu,
+body.sacci-island-admin #adminmenu li.current,
+body.sacci-island-admin #adminmenu li.opensub {
+    background: transparent !important;
+}
+
+body.sacci-island-admin #adminmenu li.menu-top > a {
+    display: flex;
+    min-height: 46px;
+    align-items: center;
+    gap: 12px;
+    padding: 0 44px 0 15px;
+    border-radius: 999px;
+    color: var(--sacci-text);
+    background: transparent !important;
+    transition:
+        color 160ms ease,
+        background 160ms ease,
+        box-shadow 160ms ease,
+        transform 160ms ease;
+}
+
+body.sacci-island-admin #adminmenu li.menu-top > a:hover,
+body.sacci-island-admin #adminmenu li.menu-top > a:focus {
+    transform: translateX(2px);
+}
+
+body.sacci-island-admin #adminmenu li:not(.wp-has-submenu).menu-top > a {
+    padding-right: 15px;
+}
+
+body.sacci-island-admin #adminmenu li.menu-top:hover > a,
+body.sacci-island-admin #adminmenu li.opensub > a,
+body.sacci-island-admin #adminmenu li > a:focus {
+    color: var(--sacci-green) !important;
+    background: var(--sacci-pale-green) !important;
+}
+
+body.sacci-island-admin #adminmenu li.current > a.menu-top,
+body.sacci-island-admin #adminmenu li.wp-has-current-submenu > a.wp-has-current-submenu {
+    position: relative;
+    color: var(--sacci-ivory) !important;
+    background:
+        linear-gradient(135deg, var(--sacci-green), var(--sacci-green-deep)) !important;
+    box-shadow: 0 8px 18px color-mix(in srgb, var(--sacci-green-deep) 18%, transparent);
+    font-weight: 760;
+}
+
+body.sacci-island-admin #adminmenu li.current > a.menu-top::before,
+body.sacci-island-admin #adminmenu li.wp-has-current-submenu > a.wp-has-current-submenu::before {
+    content: "";
+    position: absolute;
+    top: 12px;
+    bottom: 12px;
+    left: 7px;
+    width: 4px;
+    border-radius: 999px;
+    background: var(--sacci-gold);
+}
+
+body.sacci-island-admin #adminmenu li.current > a.menu-top::after,
+body.sacci-island-admin #adminmenu li.wp-has-current-submenu > a.wp-has-current-submenu::after,
+body.sacci-island-admin #adminmenu .wp-menu-arrow {
+    display: none !important;
+}
+
+body.sacci-island-admin #adminmenu div.wp-menu-image {
+    display: grid;
+    flex: 0 0 28px;
+    place-items: center;
+    width: 28px;
+    height: 30px;
+}
+
+body.sacci-island-admin #adminmenu div.wp-menu-image::before {
+    width: auto;
+    height: auto;
+    padding: 0;
+    color: currentColor !important;
+    font-size: 19px;
+}
+
+body.sacci-island-admin #adminmenu .wp-menu-name {
+    overflow: hidden;
+    min-width: 0;
+    padding: 0;
+    color: inherit;
+    font-size: 13px;
+    font-weight: 660;
+    line-height: 1.25;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+body.sacci-island-admin #adminmenu .awaiting-mod,
+body.sacci-island-admin #adminmenu .update-plugins {
+    margin-left: auto;
+    color: var(--sacci-ivory);
+    background: var(--sacci-danger);
+}
+
+/* =========================================================
+   Submenu Accordion
+========================================================= */
+
+body.sacci-island-admin #adminmenu .sacci-submenu-toggle {
+    position: absolute;
+    z-index: 2;
+    top: 7px;
+    right: 8px;
+    display: grid;
+    width: 30px;
+    height: 30px;
+    place-items: center;
+    border: 0;
+    border-radius: 50%;
+    color: var(--sacci-muted);
+    background: transparent;
+    cursor: pointer;
+    transition:
+        color 160ms ease,
+        background 160ms ease,
+        transform 180ms ease;
+}
+
+body.sacci-island-admin #adminmenu .sacci-submenu-toggle:hover,
+body.sacci-island-admin #adminmenu .sacci-submenu-toggle:focus {
+    color: var(--sacci-green);
+    background: var(--sacci-pale-green);
+    outline: 0;
+}
+
+body.sacci-island-admin #adminmenu .sacci-submenu-toggle svg {
+    width: 17px;
+    height: 17px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 180ms ease;
+}
+
+body.sacci-island-admin #adminmenu li.wp-has-current-submenu > .sacci-submenu-toggle {
+    color: var(--sacci-ivory);
+}
+
+body.sacci-island-admin #adminmenu li.wp-has-current-submenu > .sacci-submenu-toggle:hover,
+body.sacci-island-admin #adminmenu li.wp-has-current-submenu > .sacci-submenu-toggle:focus {
+    color: var(--sacci-green-deep);
+    background: var(--sacci-gold-soft);
+}
+
+body.sacci-island-admin #adminmenu li.sacci-submenu-open > .sacci-submenu-toggle svg {
+    transform: rotate(180deg);
+}
+
+body.sacci-island-admin #adminmenu .wp-submenu {
+    position: static !important;
+    display: block !important;
+    width: auto;
+    min-width: 0;
+    max-height: 0;
+    margin: 0 9px 0 46px;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid transparent;
+    border-radius: 15px;
+    background: transparent !important;
+    box-shadow: none;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-4px);
+    transition:
+        max-height 240ms cubic-bezier(.2, .8, .2, 1),
+        opacity 180ms ease,
+        transform 180ms ease,
+        margin 180ms ease,
+        padding 180ms ease;
+}
+
+body.sacci-island-admin #adminmenu li.sacci-submenu-open > .wp-submenu {
+    max-height: min(var(--sacci-submenu-height, 260px), 260px);
+    margin-top: 7px;
+    margin-bottom: 8px;
+    padding: 7px;
+    overflow-y: auto;
+    border-color: color-mix(in srgb, var(--sacci-gold) 24%, var(--sacci-border));
+    background:
+        linear-gradient(180deg, var(--sacci-gold-soft), color-mix(in srgb, var(--sacci-cream) 78%, var(--sacci-ivory))) !important;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+body.sacci-island-admin #adminmenu .wp-submenu::-webkit-scrollbar {
+    width: 8px;
+}
+
+body.sacci-island-admin #adminmenu .wp-submenu::-webkit-scrollbar-thumb {
+    border-width: 2px;
+}
+
+body.sacci-island-admin #adminmenu .wp-submenu-head {
+    display: none !important;
+}
+
+body.sacci-island-admin #adminmenu .wp-submenu li {
+    margin: 0;
+}
+
+body.sacci-island-admin #adminmenu .wp-submenu a {
+    display: block;
+    min-height: 31px;
+    padding: 7px 10px;
+    border-radius: 999px;
+    color: var(--sacci-muted) !important;
+    font-size: 12px;
+    font-weight: 650;
+    line-height: 1.45;
+    text-decoration: none;
+}
+
+body.sacci-island-admin #adminmenu .wp-submenu li.current a,
+body.sacci-island-admin #adminmenu .wp-submenu a:hover,
+body.sacci-island-admin #adminmenu .wp-submenu a:focus {
+    color: var(--sacci-green-deep) !important;
+    background: var(--sacci-ivory) !important;
+}
+
+body.sacci-island-admin #collapse-menu {
+    display: none;
+}
+
+/* =========================================================
+   Workspace
+========================================================= */
+
+body.sacci-island-admin #wpcontent {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: var(--sacci-admin-header);
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    color: var(--sacci-text);
+    background: var(--sacci-cream) !important;
+    transition: left 240ms cubic-bezier(.2, .8, .2, 1);
+}
+
+body.sacci-island-admin.sacci-sidebar-open #wpcontent {
+    left: var(--sacci-admin-sidebar);
+}
+
+body.sacci-island-admin #wpbody {
+    flex: 1 0 auto;
+    min-height: auto;
+    padding: 0 32px;
+}
+
+body.sacci-island-admin #wpbody-content {
+    min-height: auto;
+    padding-bottom: 24px;
+}
+
+body.sacci-island-admin #wpbody-content > .wrap {
+    max-width: 1600px;
+    margin: 0;
+    padding-top: 28px;
+    color: var(--sacci-text);
+}
+
+body.sacci-island-admin #wpfooter {
+    position: static;
+    flex: 0 0 auto;
+    display: flex;
+    clear: both;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    min-height: 72px;
+    margin: auto 32px 0;
+    padding: 20px 0 22px;
+    border-top: 1px solid var(--sacci-border);
+    color: var(--sacci-muted);
+    background: transparent;
+}
+
+body.sacci-island-admin #wpfooter p {
+    position: static;
+    margin: 0;
+    color: inherit;
+}
+
+body.sacci-island-admin #wpfooter a {
+    color: var(--sacci-green-deep);
+    font-weight: 720;
+}
+
+body.sacci-island-admin .e-admin-top-bar,
+body.sacci-island-admin .e-admin-top-bar__main-area,
+body.sacci-island-admin .elementor-admin-top-bar,
+body.sacci-island-admin .elementor-app-bar,
+body.sacci-island-admin .elementor-admin-header {
+    border: 1px solid var(--sacci-border) !important;
+    border-radius: 18px !important;
+    color: var(--sacci-text) !important;
+    background:
+        linear-gradient(90deg, var(--sacci-ivory), var(--sacci-pale-green)) !important;
+    box-shadow: var(--sacci-shadow-panel) !important;
+}
+
+body.sacci-island-admin .e-admin-top-bar *,
+body.sacci-island-admin .elementor-admin-top-bar *,
+body.sacci-island-admin .elementor-app-bar *,
+body.sacci-island-admin .elementor-admin-header * {
+    color: var(--sacci-text) !important;
+}
+
+body.sacci-island-admin .e-admin-top-bar a,
+body.sacci-island-admin .elementor-admin-top-bar a,
+body.sacci-island-admin .elementor-app-bar a,
+body.sacci-island-admin .elementor-admin-header a {
+    color: var(--sacci-green) !important;
+}
+
+/* =========================================================
+   WordPress Components
+========================================================= */
+
+body.sacci-island-admin a {
+    color: var(--sacci-green);
+}
+
+body.sacci-island-admin a:hover,
+body.sacci-island-admin a:focus {
+    color: var(--sacci-green-deep);
+}
+
+body.sacci-island-admin h1,
+body.sacci-island-admin h2,
+body.sacci-island-admin h3,
+body.sacci-island-admin h4,
+body.sacci-island-admin h5,
+body.sacci-island-admin h6 {
+    color: var(--sacci-text);
+}
+
+body.sacci-island-admin h1 {
+    letter-spacing: 0;
+}
+
+body.sacci-island-admin .wrap > h1,
+body.sacci-island-admin .wrap > h2:first-child {
+    color: var(--sacci-green-deep);
+    font-weight: 760;
+}
+
+body.sacci-island-admin .postbox,
+body.sacci-island-admin .card,
+body.sacci-island-admin .stuffbox,
+body.sacci-island-admin .notice,
+body.sacci-island-admin .update-nag,
+body.sacci-island-admin .health-check-body,
+body.sacci-island-admin .welcome-panel,
+body.sacci-island-admin .plugin-card,
+body.sacci-island-admin .theme,
+body.sacci-island-admin .media-frame,
+body.sacci-island-admin .media-modal-content,
+body.sacci-island-admin .metabox-holder .postbox,
+body.sacci-island-admin .edit-post-layout,
+body.sacci-island-admin .components-panel,
+body.sacci-island-admin .components-modal__frame {
+    border-color: var(--sacci-border) !important;
+    border-radius: var(--sacci-admin-radius);
+    color: var(--sacci-text);
+    background: var(--sacci-ivory) !important;
+    box-shadow: var(--sacci-shadow-panel);
+}
+
+body.sacci-island-admin .notice,
+body.sacci-island-admin .update-nag {
+    border-left-color: var(--sacci-gold) !important;
+}
+
+body.sacci-island-admin .notice-error,
+body.sacci-island-admin .error {
+    border-left-color: var(--sacci-danger) !important;
+}
+
+body.sacci-island-admin .notice-info {
+    border-left-color: var(--sacci-info) !important;
+}
+
+body.sacci-island-admin .button,
+body.sacci-island-admin .button-secondary,
+body.sacci-island-admin .button-primary,
+body.sacci-island-admin .page-title-action {
+    min-height: 38px;
+    border-radius: 999px;
+    font-weight: 700;
+    line-height: 2.25;
+}
+
+body.sacci-island-admin .button-primary,
+body.sacci-island-admin .page-title-action {
+    border-color: var(--sacci-green) !important;
+    color: var(--sacci-ivory) !important;
+    background: var(--sacci-green) !important;
+}
+
+body.sacci-island-admin .button-primary:hover,
+body.sacci-island-admin .button-primary:focus,
+body.sacci-island-admin .page-title-action:hover,
+body.sacci-island-admin .page-title-action:focus {
+    border-color: var(--sacci-green-deep) !important;
+    background: var(--sacci-green-deep) !important;
+}
+
+body.sacci-island-admin .button,
+body.sacci-island-admin .button-secondary {
+    border-color: var(--sacci-border) !important;
+    color: var(--sacci-green-deep) !important;
+    background: var(--sacci-ivory) !important;
+}
+
+body.sacci-island-admin .button:hover,
+body.sacci-island-admin .button:focus,
+body.sacci-island-admin .button-secondary:hover,
+body.sacci-island-admin .button-secondary:focus {
+    border-color: var(--sacci-gold) !important;
+    color: var(--sacci-green-deep) !important;
+    background: var(--sacci-gold-soft) !important;
+}
+
+body.sacci-island-admin .button-link-delete,
+body.sacci-island-admin .submitdelete,
+body.sacci-island-admin .trash a,
+body.sacci-island-admin .delete a {
+    color: var(--sacci-danger) !important;
+}
+
+body.sacci-island-admin input[type="text"],
+body.sacci-island-admin input[type="email"],
+body.sacci-island-admin input[type="url"],
+body.sacci-island-admin input[type="search"],
+body.sacci-island-admin input[type="number"],
+body.sacci-island-admin input[type="password"],
+body.sacci-island-admin input[type="date"],
+body.sacci-island-admin select,
+body.sacci-island-admin textarea {
+    border-color: var(--sacci-border) !important;
+    border-radius: 12px;
+    color: var(--sacci-text) !important;
+    background: var(--sacci-ivory) !important;
+    box-shadow: none !important;
+}
+
+body.sacci-island-admin input:focus,
+body.sacci-island-admin select:focus,
+body.sacci-island-admin textarea:focus {
+    border-color: var(--sacci-green) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--sacci-green) 16%, transparent) !important;
+    outline: 0;
+}
+
+body.sacci-island-admin .wp-list-table,
+body.sacci-island-admin table.widefat {
+    overflow: hidden;
+    border: 1px solid var(--sacci-border) !important;
+    border-radius: var(--sacci-admin-radius);
+    color: var(--sacci-text);
+    background: var(--sacci-ivory) !important;
+    box-shadow: var(--sacci-shadow-panel);
+}
+
+body.sacci-island-admin .wp-list-table thead th,
+body.sacci-island-admin .wp-list-table tfoot th,
+body.sacci-island-admin table.widefat thead th,
+body.sacci-island-admin table.widefat tfoot th {
+    color: var(--sacci-green-deep) !important;
+    background: var(--sacci-pale-green) !important;
+}
+
+body.sacci-island-admin .wp-list-table td,
+body.sacci-island-admin .wp-list-table th,
+body.sacci-island-admin table.widefat td,
+body.sacci-island-admin table.widefat th {
+    border-color: var(--sacci-border) !important;
+    color: var(--sacci-text);
+}
+
+body.sacci-island-admin .striped > tbody > :nth-child(odd),
+body.sacci-island-admin ul.striped > :nth-child(odd),
+body.sacci-island-admin .alternate,
+body.sacci-island-admin .alt {
+    background: color-mix(in srgb, var(--sacci-pale-green) 48%, var(--sacci-ivory)) !important;
+}
+
+body.sacci-island-admin .plugins .active th,
+body.sacci-island-admin .plugins .active td {
+    background: var(--sacci-pale-green) !important;
+}
+
+body.sacci-island-admin .plugins .active th {
+    border-left: 4px solid var(--sacci-green) !important;
+}
+
+body.sacci-island-admin .subsubsub,
+body.sacci-island-admin .tablenav,
+body.sacci-island-admin .search-box,
+body.sacci-island-admin .form-table,
+body.sacci-island-admin .form-table th,
+body.sacci-island-admin .form-table td {
+    color: var(--sacci-text);
+}
+
+body.sacci-island-admin .wp-core-ui .plugin-update-tr.active td,
+body.sacci-island-admin .plugin-update-tr .update-message {
+    color: var(--sacci-text);
+    background: var(--sacci-gold-soft) !important;
+}
+
+body.sacci-island-admin .media-modal,
+body.sacci-island-admin .media-frame,
+body.sacci-island-admin .media-frame-content,
+body.sacci-island-admin .media-sidebar,
+body.sacci-island-admin .media-toolbar,
+body.sacci-island-admin .media-menu {
+    color: var(--sacci-text);
+    background: var(--sacci-ivory) !important;
+}
+
+.sacci-access-denied-card {
+    max-width: 620px;
+    margin: 60px auto;
+    padding: 38px;
+    border: 1px solid var(--sacci-border);
+    border-radius: 28px;
+    color: var(--sacci-text);
+    background: var(--sacci-ivory);
+    box-shadow: var(--sacci-shadow-soft);
+    font-family: system-ui, sans-serif;
+}
+
+.sacci-access-denied-card h1 {
+    margin: 0 0 10px;
+    color: var(--sacci-green-deep);
+}
+
+.sacci-access-denied-card p {
+    color: var(--sacci-muted);
+    line-height: 1.7;
+}
+
+.sacci-access-denied-card a {
+    display: inline-flex;
+    padding: 12px 18px;
+    border-radius: 999px;
+    color: var(--sacci-ivory);
+    background: var(--sacci-green);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+/* =========================================================
+   Parish Overview
+========================================================= */
+
+body.index-php.sacci-island-admin #wpbody-content > .wrap > h1:first-child,
+body.index-php.sacci-island-admin #dashboard-widgets-wrap > #dashboard-widgets > .postbox-container:not(:first-child),
+body.index-php.sacci-island-admin .welcome-panel,
+body.index-php.sacci-island-admin .notice:not(.notice-error):not(.error),
+body.index-php.sacci-island-admin .update-nag {
+    display: none !important;
+}
+
+body.index-php.sacci-island-admin #dashboard-widgets-wrap {
+    margin: 0;
+}
+
+body.index-php.sacci-island-admin #dashboard-widgets {
+    display: block;
+    margin: 0;
+}
+
+body.index-php.sacci-island-admin #dashboard-widgets .postbox-container {
+    width: 100% !important;
+}
+
+body.index-php.sacci-island-admin #dashboard-widgets .meta-box-sortables {
+    min-height: 0;
+    margin: 0;
+}
+
+body.index-php.sacci-island-admin #sacci_parish_dashboard {
+    overflow: visible;
+    margin: 0;
+    border: 0 !important;
+    border-radius: 0;
+    background: transparent !important;
+    box-shadow: none;
+}
+
+body.index-php.sacci-island-admin #sacci_parish_dashboard .postbox-header {
+    display: none;
+}
+
+body.index-php.sacci-island-admin #sacci_parish_dashboard .inside {
+    margin: 0;
+    padding: 0;
+}
+
+.sacci-admin-dashboard {
+    width: 100%;
+    padding-top: 30px;
+}
+
+.sacci-dashboard-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    margin-bottom: 26px;
+}
+
+.sacci-dashboard-heading h1 {
+    margin: 0;
+    color: var(--sacci-green-deep);
+    font-size: clamp(30px, 3vw, 42px);
+    font-weight: 790;
+    line-height: 1.08;
+}
+
+.sacci-dashboard-heading p {
+    margin: 8px 0 0;
+    color: var(--sacci-muted);
+    font-size: 14px;
+}
+
+.sacci-dashboard-date {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 10px;
+    min-height: 50px;
+    padding: 0 18px;
+    border: 1px solid var(--sacci-border);
+    border-radius: 999px;
+    color: var(--sacci-text);
+    background: var(--sacci-ivory);
+    box-shadow: var(--sacci-shadow-panel);
+}
+
+.sacci-dashboard-date .dashicons {
+    color: var(--sacci-green);
+}
+
+.sacci-dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.sacci-stat-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 60px minmax(0, 1fr);
+    align-items: center;
+    gap: 16px;
+    min-height: 138px;
+    padding: 22px;
+    border: 1px solid var(--sacci-border);
+    border-radius: 18px;
+    color: var(--sacci-text);
+    background: var(--sacci-ivory);
+    box-shadow: var(--sacci-shadow-panel);
+    text-decoration: none;
+    transition:
+        transform 180ms ease,
+        box-shadow 180ms ease;
+}
+
+.sacci-stat-card:hover,
+.sacci-stat-card:focus {
+    color: var(--sacci-text);
+    transform: translateY(-2px);
+    box-shadow: var(--sacci-shadow-soft);
+}
+
+.sacci-stat-icon {
+    display: grid;
+    place-items: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+}
+
+.sacci-stat-icon .dashicons {
+    width: auto;
+    height: auto;
+    font-size: 30px;
+}
+
+.sacci-stat-card small,
+.sacci-stat-card strong,
+.sacci-stat-card span {
+    display: block;
+}
+
+.sacci-stat-card small {
+    color: var(--sacci-text);
+    font-size: 13px;
+    font-weight: 760;
+}
+
+.sacci-stat-card strong {
+    margin-top: 7px;
+    font-size: 30px;
+    line-height: 1;
+}
+
+.sacci-stat-card span {
+    margin-top: 8px;
+    color: var(--sacci-muted);
+    font-size: 12px;
+}
+
+.sacci-stat-card > i {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: var(--sacci-muted);
+    font-style: normal;
+}
+
+.sacci-stat-card.is-green .sacci-stat-icon,
+.sacci-action-icon.is-green,
+.sacci-activity-icon.is-green,
+.sacci-important-notice > .dashicons {
+    color: var(--sacci-green);
+    background: var(--sacci-pale-green);
+}
+
+.sacci-stat-card.is-green strong {
+    color: var(--sacci-green);
+}
+
+.sacci-stat-card.is-amber .sacci-stat-icon,
+.sacci-action-icon.is-amber,
+.sacci-activity-icon.is-amber {
+    color: var(--sacci-gold);
+    background: var(--sacci-gold-soft);
+}
+
+.sacci-stat-card.is-amber strong {
+    color: var(--sacci-gold);
+}
+
+.sacci-stat-card.is-blue .sacci-stat-icon,
+.sacci-action-icon.is-blue,
+.sacci-activity-icon.is-blue {
+    color: var(--sacci-info);
+    background: color-mix(in srgb, var(--sacci-info) 12%, var(--sacci-ivory));
+}
+
+.sacci-stat-card.is-blue strong {
+    color: var(--sacci-info);
+}
+
+.sacci-stat-card.is-violet .sacci-stat-icon,
+.sacci-action-icon.is-violet,
+.sacci-activity-icon.is-violet {
+    color: var(--sacci-violet);
+    background: color-mix(in srgb, var(--sacci-violet) 12%, var(--sacci-ivory));
+}
+
+.sacci-stat-card.is-violet strong {
+    color: var(--sacci-violet);
+}
+
+.sacci-activity-icon.is-red {
+    color: var(--sacci-danger);
+    background: color-mix(in srgb, var(--sacci-danger) 12%, var(--sacci-ivory));
+}
+
+.sacci-dashboard-columns {
+    display: grid;
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    gap: 18px;
+}
+
+.sacci-dashboard-left {
+    display: grid;
+    align-content: start;
+    gap: 18px;
+}
+
+.sacci-dashboard-panel,
+.sacci-important-notice {
+    overflow: hidden;
+    border: 1px solid var(--sacci-border);
+    border-radius: 18px;
+    background: var(--sacci-ivory);
+    box-shadow: var(--sacci-shadow-panel);
+}
+
+.sacci-dashboard-panel > header {
+    padding: 24px 24px 8px;
+}
+
+.sacci-dashboard-panel h2 {
+    margin: 0;
+    color: var(--sacci-green-deep);
+    font-size: 17px;
+}
+
+.sacci-quick-actions > div {
+    padding: 5px 22px 19px;
+}
+
+.sacci-quick-actions a {
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 15px;
+    min-height: 76px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--sacci-border);
+    color: var(--sacci-text);
+    text-decoration: none;
+}
+
+.sacci-quick-actions a:last-child,
+.sacci-activity-list > a:last-child {
+    border-bottom: 0;
+}
+
+.sacci-action-icon,
+.sacci-activity-icon {
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+}
+
+.sacci-action-icon {
+    width: 52px;
+    height: 52px;
+}
+
+.sacci-action-icon .dashicons {
+    width: auto;
+    height: auto;
+    font-size: 24px;
+}
+
+.sacci-quick-actions strong,
+.sacci-quick-actions small,
+.sacci-activity-list strong,
+.sacci-activity-list small {
+    display: block;
+}
+
+.sacci-quick-actions strong,
+.sacci-activity-list strong {
+    color: var(--sacci-text);
+    font-size: 14px;
+}
+
+.sacci-quick-actions small,
+.sacci-activity-list small {
+    margin-top: 5px;
+    color: var(--sacci-muted);
+}
+
+.sacci-quick-actions i {
+    color: var(--sacci-green-deep);
+    font-size: 24px;
+    font-style: normal;
+}
+
+.sacci-important-notice {
+    display: grid;
+    grid-template-columns: 54px minmax(0, 1fr);
+    align-items: start;
+    gap: 16px;
+    padding: 24px;
+}
+
+.sacci-important-notice > .dashicons {
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    font-size: 25px;
+}
+
+.sacci-important-notice strong {
+    display: block;
+    color: var(--sacci-green-deep);
+    font-size: 14px;
+}
+
+.sacci-important-notice p {
+    margin: 7px 0 0;
+    color: var(--sacci-muted);
+    line-height: 1.65;
+}
+
+.sacci-recent-activity {
+    min-height: 100%;
+}
+
+.sacci-activity-list {
+    padding: 4px 22px 15px;
+}
+
+.sacci-activity-list > a {
+    display: grid;
+    grid-template-columns: 46px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 14px;
+    min-height: 78px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--sacci-border);
+    color: var(--sacci-text);
+    text-decoration: none;
+}
+
+.sacci-activity-icon {
+    width: 46px;
+    height: 46px;
+}
+
+.sacci-activity-icon .dashicons {
+    width: auto;
+    height: auto;
+    font-size: 22px;
+}
+
+.sacci-activity-list time {
+    color: var(--sacci-muted);
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.sacci-empty-activity {
+    display: grid;
+    min-height: 300px;
+    place-items: center;
+    padding: 40px;
+    color: var(--sacci-muted);
+    text-align: center;
+}
+
+/* =========================================================
+   Command Search
+========================================================= */
+
+.sacci-admin-command-overlay {
+    position: fixed;
+    z-index: 1000000;
+    inset: 0;
+    display: grid;
+    place-items: start center;
+    padding: 11vh 18px 30px;
+    background: color-mix(in srgb, var(--sacci-green-deep) 35%, transparent);
+    backdrop-filter: var(--sacci-frost);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 160ms ease;
+}
+
+.sacci-admin-command-overlay.is-open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.sacci-admin-command {
+    width: min(100%, 680px);
+    overflow: hidden;
+    border: 1px solid var(--sacci-border);
+    border-radius: 22px;
+    background: var(--sacci-ivory);
+    box-shadow: 0 28px 72px color-mix(in srgb, var(--sacci-green-deep) 28%, transparent);
+    transform: translateY(-12px);
+    transition: transform 180ms ease;
+}
+
+.sacci-admin-command-overlay.is-open .sacci-admin-command {
+    transform: translateY(0);
+}
+
+.sacci-admin-command__input {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 17px 20px;
+    border-bottom: 1px solid var(--sacci-border);
+}
+
+.sacci-admin-command__input .dashicons {
+    color: var(--sacci-green);
+}
+
+.sacci-admin-command__input input {
+    width: 100%;
+    min-height: 38px;
+    border: 0 !important;
+    outline: 0;
+    box-shadow: none !important;
+    font-size: 16px;
+}
+
+.sacci-admin-command__results {
+    max-height: 56vh;
+    overflow-y: auto;
+    padding: 8px;
+}
+
+.sacci-admin-command__results a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 48px;
+    padding: 8px 12px;
+    border-radius: 14px;
+    color: var(--sacci-text);
+    text-decoration: none;
+}
+
+.sacci-admin-command__results a:hover,
+.sacci-admin-command__results a.is-selected {
+    color: var(--sacci-green);
+    background: var(--sacci-pale-green);
+}
+
+.sacci-admin-command__results .dashicons {
+    color: var(--sacci-muted);
+}
+
+.sacci-admin-command__empty {
+    margin: 0;
+    padding: 18px;
+    color: var(--sacci-muted);
+}
+
+/* =========================================================
+   Responsive
+========================================================= */
+
+.sacci-sidebar-backdrop {
+    position: fixed;
+    z-index: 9992;
+    inset: var(--sacci-admin-header) 0 0;
+    border: 0;
+    background: color-mix(in srgb, var(--sacci-green-deep) 38%, transparent);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease;
+}
+
+@media (max-width: 1220px) {
+    .sacci-dashboard-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 960px) {
+    body.sacci-island-admin.sacci-sidebar-open #wpcontent {
+        left: 0;
+    }
+
+    body.sacci-island-admin.sacci-sidebar-open .sacci-sidebar-backdrop {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    body.sacci-island-admin #adminmenuwrap {
+        box-shadow: var(--sacci-shadow-drawer);
+    }
+
+    .sacci-dashboard-columns {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 782px) {
+    html.wp-toolbar {
+        padding-top: 0;
+    }
+
+    body.sacci-island-admin {
+        --sacci-admin-header: 72px;
+    }
+
+    body.sacci-island-admin #wpadminbar {
+        height: var(--sacci-admin-header);
+        padding: 0 8px;
+    }
+
+    body.sacci-island-admin #wpadminbar .quicklinks,
+    body.sacci-island-admin #wpadminbar .quicklinks > ul,
+    body.sacci-island-admin #wpadminbar .quicklinks > ul > li,
+    body.sacci-island-admin #wpadminbar .ab-item {
+        height: var(--sacci-admin-header);
+        line-height: var(--sacci-admin-header);
+    }
+
+    body.sacci-island-admin #wpadminbar #wp-admin-bar-menu-toggle {
+        display: none;
+    }
+
+    body.sacci-island-admin #wp-admin-bar-sacci-sidebar-toggle {
+        margin-right: 3px;
+    }
+
+    body.sacci-island-admin .sacci-adminbar-lockup {
+        min-width: 0;
+    }
+
+    body.sacci-island-admin .sacci-adminbar-mark {
+        flex-basis: 44px;
+        width: 44px;
+        height: 44px;
+    }
+
+    body.sacci-island-admin .sacci-adminbar-lockup strong {
+        max-width: 150px;
+        font-size: 13px;
+    }
+
+    body.sacci-island-admin .sacci-adminbar-lockup small {
+        display: none;
+    }
+
+    body.sacci-island-admin #wp-admin-bar-sacci-admin-search .ab-label,
+    body.sacci-island-admin #wp-admin-bar-new-content .ab-label {
+        display: none;
+    }
+
+    body.sacci-island-admin #adminmenuwrap {
+        top: var(--sacci-admin-header);
+        width: min(86vw, 304px);
+    }
+
+    body.sacci-island-admin #wpcontent {
+        top: var(--sacci-admin-header);
+        left: 0 !important;
+    }
+
+    body.sacci-island-admin #wpbody {
+        padding: 0 16px;
+    }
+
+    body.sacci-island-admin #wpbody-content > .wrap {
+        overflow-x: auto;
+        padding-top: 20px;
+    }
+
+    body.sacci-island-admin .wp-list-table,
+    body.sacci-island-admin table.widefat {
+        min-width: 740px;
+    }
+
+    .sacci-admin-dashboard {
+        padding-top: 22px;
+    }
+
+    .sacci-dashboard-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .sacci-dashboard-date {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .sacci-dashboard-stats {
+        grid-template-columns: 1fr;
+    }
+
+    body.sacci-island-admin #wpfooter {
+        align-items: flex-start;
+        flex-direction: column;
+        margin-right: 16px;
+        margin-left: 16px;
+    }
+}
+
+@media (max-width: 560px) {
+    body.sacci-island-admin #wp-admin-bar-sacci-island-brand {
+        margin-right: 0;
+    }
+
+    body.sacci-island-admin .sacci-adminbar-lockup strong {
+        max-width: 106px;
+    }
+
+    body.sacci-island-admin #wp-admin-bar-sacci-admin-search {
+        display: none;
+    }
+
+    .sacci-stat-card {
+        min-height: 124px;
+        padding: 18px;
+    }
+
+    .sacci-activity-list > a {
+        grid-template-columns: 44px minmax(0, 1fr);
+    }
+
+    .sacci-activity-list time {
+        grid-column: 2;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.sacci-island-admin *,
+    body.sacci-island-admin *::before,
+    body.sacci-island-admin *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+    }
+}
