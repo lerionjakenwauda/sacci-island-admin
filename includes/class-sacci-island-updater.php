@@ -11,6 +11,23 @@ final class SACCI_Island_Updater {
         add_filter('pre_set_site_transient_update_plugins', [__CLASS__, 'check_for_update']);
         add_filter('plugins_api', [__CLASS__, 'plugin_info'], 20, 3);
         add_filter('upgrader_source_selection', [__CLASS__, 'normalise_source_directory'], 10, 4);
+        add_action(
+            'delete_site_transient_update_plugins',
+            [__CLASS__, 'clear_release_cache'],
+            10,
+            1
+        );
+    }
+
+    /**
+     * Keep SACCI's release cache in step with WordPress's plugin-update cache.
+     *
+     * WordPress deletes update_plugins when an administrator clicks
+     * "Check again". Clearing our cache on the same event guarantees that the
+     * next update pass asks GitHub for the latest release immediately.
+     */
+    public static function clear_release_cache(string $transient = ''): void {
+        delete_site_transient(self::CACHE_KEY);
     }
 
     public static function check_for_update($transient) {
@@ -115,21 +132,21 @@ final class SACCI_Island_Updater {
         );
 
         if (is_wp_error($response) || wp_remote_retrieve_response_code($response) !== 200) {
-            set_site_transient(self::CACHE_KEY, [], HOUR_IN_SECONDS);
+            set_site_transient(self::CACHE_KEY, [], 5 * MINUTE_IN_SECONDS);
             return null;
         }
 
         $payload = json_decode(wp_remote_retrieve_body($response), true);
 
         if (!is_array($payload)) {
-            set_site_transient(self::CACHE_KEY, [], HOUR_IN_SECONDS);
+            set_site_transient(self::CACHE_KEY, [], 5 * MINUTE_IN_SECONDS);
             return null;
         }
 
         $version = self::normalise_version((string) ($payload['tag_name'] ?? ''));
 
         if ($version === '') {
-            set_site_transient(self::CACHE_KEY, [], HOUR_IN_SECONDS);
+            set_site_transient(self::CACHE_KEY, [], 5 * MINUTE_IN_SECONDS);
             return null;
         }
 
@@ -146,7 +163,7 @@ final class SACCI_Island_Updater {
             'package'  => $package,
         ];
 
-        set_site_transient(self::CACHE_KEY, $release, 6 * HOUR_IN_SECONDS);
+        set_site_transient(self::CACHE_KEY, $release, 15 * MINUTE_IN_SECONDS);
         return $release;
     }
 

@@ -86,6 +86,9 @@ jobs:
       - name: Run rewrite regression checks
         run: php tests/white-label-rewrite-test.php
 
+      - name: Run updater cache regression checks
+        run: php tests/updater-cache-test.php
+
       - name: Check JavaScript syntax
         run: |
           node --check assets/js/admin-islands.js
