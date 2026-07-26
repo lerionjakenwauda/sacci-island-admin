@@ -25,7 +25,7 @@ define('SACCI_ISLAND_VERSION_OPTION', 'sacci_island_admin_version');
 define('SACCI_ISLAND_RBAC_SCHEMA_VERSION', '1.0.0');
 define('SACCI_ISLAND_RBAC_SCHEMA_OPTION', 'sacci_rbac_schema_version');
 define('SACCI_ISLAND_AUDIT_OPTION', 'sacci_island_admin_audit_log');
-define('SACCI_ISLAND_GITHUB_REPO', 'joseph724-Fk/sacci-island-admin');
+define('SACCI_ISLAND_GITHUB_REPO', 'lerionjakenwauda/sacci-island-admin');
 
 require_once SACCI_ISLAND_DIR . 'includes/class-sacci-island-audit-log.php';
 require_once SACCI_ISLAND_DIR . 'includes/class-sacci-island-rbac.php';
