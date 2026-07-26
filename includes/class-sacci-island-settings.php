@@ -29,8 +29,8 @@ final class SACCI_Island_Settings {
             'text'              => '#183126',
             'radius'            => 18,
             'rail_width'        => 0,
-            'sidebar_width'     => 264,
-            'header_height'     => 72,
+            'sidebar_width'     => 252,
+            'header_height'     => 76,
             'compact'           => 0,
             'appearance_mode'   => 'light',
             'dashboard_welcome' => 1,
@@ -894,7 +894,7 @@ final class SACCI_Island_Settings {
 
         $clean['header_height'] = isset($raw['header_height'])
             ? max(68, min(76, absint($raw['header_height'])))
-            : max(68, min(76, absint($current['header_height'] ?? 72)));
+            : max(68, min(76, absint($current['header_height'] ?? 76)));
 
         $clean['appearance_mode'] = 'light';
 

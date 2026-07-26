@@ -22,11 +22,11 @@ final class SACCI_Island_Shell {
         $radius = max(16, min(28, absint($settings['radius'] ?? 20)));
         $sidebar_width = max(
             248,
-            min(288, absint($settings['sidebar_width'] ?? 264))
+            min(288, absint($settings['sidebar_width'] ?? 252))
         );
         $header_height = max(
             68,
-            min(76, absint($settings['header_height'] ?? 72))
+            min(76, absint($settings['header_height'] ?? 76))
         );
 
         wp_enqueue_style(
@@ -143,7 +143,6 @@ final class SACCI_Island_Shell {
     public static function build_admin_bar(WP_Admin_Bar $admin_bar): void {
         $settings = SACCI_Island_Settings::get();
         $mark_url = SACCI_Island_Settings::logo_url($settings);
-        $wordmark_url = SACCI_ISLAND_URL . 'assets/images/parish-logo.png';
 
         $admin_bar->add_node([
             'id'     => 'sacci-sidebar-toggle',
@@ -169,14 +168,16 @@ final class SACCI_Island_Shell {
             'parent' => false,
             'title'  =>
                 '<span class="sacci-adminbar-lockup">' .
-                    '<span class="sacci-adminbar-logo" aria-hidden="true">' .
-                        '<img class="sacci-adminbar-wordmark" src="' .
-                            esc_url($wordmark_url) . '" alt="">' .
-                        '<img class="sacci-adminbar-mark" src="' .
-                            esc_url($mark_url) . '" alt="">' .
+                    '<span class="sacci-adminbar-mark" aria-hidden="true">' .
+                        '<img src="' . esc_url($mark_url) . '" alt="">' .
                     '</span>' .
-                    '<span class="sacci-adminbar-context">' .
-                        esc_html__('Admin', 'sacci-island-admin') .
+                    '<span class="sacci-adminbar-brand-copy" aria-hidden="true">' .
+                        '<strong>' .
+                            esc_html__('St. Augustine', 'sacci-island-admin') .
+                        '</strong>' .
+                        '<small>' .
+                            esc_html__('MaryHill · Ikorodu', 'sacci-island-admin') .
+                        '</small>' .
                     '</span>' .
                     '<span class="screen-reader-text">' .
                         esc_html((string) $settings['brand_name']) . ' — ' .

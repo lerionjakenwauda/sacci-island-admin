@@ -20,10 +20,11 @@ $checks = [
     [
         str_contains(
             $script,
-            'link.addEventListener("click", (event) => {'
+            'menu.addEventListener("click", (event) => {'
         ) &&
+        str_contains($script, 'event.stopImmediatePropagation();') &&
         str_contains($script, 'toggleItem(item);'),
-        'Parent WordPress menu links must be accordion controls.',
+        'Parent WordPress menu links must be capture-phase accordion controls.',
     ],
     [
         str_contains($script, 'event.preventDefault();') &&
@@ -37,10 +38,10 @@ $checks = [
     ],
     [
         preg_match(
-            '/#adminmenuwrap\s*\{[^}]*\btop:\s*0;[^}]*padding-top:\s*var\(--sacci-admin-header\);/s',
+            '/#adminmenuwrap\s*\{[^}]*\btop:\s*var\(--sacci-admin-header\);[^}]*padding-top:\s*0;/s',
             $style
         ) === 1,
-        'The sidebar must begin at the top of the viewport and continue behind the header.',
+        'The sidebar must start directly below the full-width WordPress top bar.',
     ],
     [
         str_contains(
@@ -51,20 +52,26 @@ $checks = [
     ],
     [
         preg_match(
-            '/#wpbody\s*\{[^}]*border-radius:\s*26px;[^}]*background:\s*var\(--sacci-ivory\)/s',
+            '/#wpbody\s*\{[^}]*border-radius:\s*28px;[^}]*background:\s*var\(--sacci-ivory\)/s',
             $style
         ) === 1,
         'The WordPress workspace must render as the primary rounded content surface.',
     ],
     [
-        str_contains($shell, "assets/images/parish-logo.png") &&
+        str_contains($shell, 'sacci-adminbar-brand-copy') &&
+        str_contains($shell, '$mark_url') &&
         str_contains($shell, "admin_url('index.php')"),
-        'The header wordmark must link to Parish Overview.',
+        'The header parish identity must link to Parish Overview.',
     ],
     [
-        str_contains($settings, "'sidebar_width'     => 264") &&
-        str_contains($settings, "'header_height'     => 72"),
+        str_contains($settings, "'sidebar_width'     => 252") &&
+        str_contains($settings, "'header_height'     => 76"),
         'The connected shell must keep its approved compact dimensions.',
+    ],
+    [
+        str_contains($style, 'background: var(--sacci-shell) !important;') &&
+        str_contains($style, 'background: var(--sacci-canvas) !important;'),
+        'Header/sidebar chrome and content canvas must use distinct shell layers.',
     ],
 ];
 

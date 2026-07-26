@@ -9,6 +9,7 @@ on:
       - "assets/**"
       - "includes/**"
       - "tests/**"
+      - "update.json"
       - "sacci-island-admin.php"
       - "uninstall.php"
   push:
@@ -19,6 +20,7 @@ on:
       - "assets/**"
       - "includes/**"
       - "tests/**"
+      - "update.json"
       - "sacci-island-admin.php"
       - "uninstall.php"
   workflow_dispatch:
@@ -76,6 +78,25 @@ jobs:
           fi
 
           echo "release_exists=false" >> "$GITHUB_OUTPUT"
+
+      - name: Validate public update manifest
+        env:
+          PLUGIN_VERSION: ${{ steps.version.outputs.version }}
+        shell: bash
+        run: |
+          manifest_version="$(jq -r '.version // empty' update.json)"
+          manifest_package="$(jq -r '.package // empty' update.json)"
+          expected_package="https://github.com/${GITHUB_REPOSITORY}/releases/download/v${PLUGIN_VERSION}/sacci-island-admin-v${PLUGIN_VERSION}.zip"
+
+          if [[ "$manifest_version" != "$PLUGIN_VERSION" ]]; then
+            echo "update.json version must match the plugin header." >&2
+            exit 1
+          fi
+
+          if [[ "$manifest_package" != "$expected_package" ]]; then
+            echo "update.json package URL does not target the canonical release ZIP." >&2
+            exit 1
+          fi
 
       - name: Lint PHP
         shell: bash

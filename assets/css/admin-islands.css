@@ -1,5 +1,5 @@
 /* =========================================================
-   SACCI ISLAND ADMIN 2.1.4
+   SACCI ISLAND ADMIN 2.1.5
    Connected light administration shell
 ========================================================= */
 
@@ -13,6 +13,10 @@
     --sacci-ivory: #FFFDF7;
     --sacci-pale-green: #EDF4EC;
     --sacci-pale-green: color-mix(in srgb, var(--sacci-green) 8%, var(--sacci-ivory));
+    --sacci-shell: #F8F8F1;
+    --sacci-shell: color-mix(in srgb, var(--sacci-green) 3%, var(--sacci-ivory));
+    --sacci-canvas: #EEF1EA;
+    --sacci-canvas: color-mix(in srgb, var(--sacci-green-deep) 7%, var(--sacci-cream));
     --sacci-border: #DCE5DB;
     --sacci-border: color-mix(in srgb, var(--sacci-green-deep) 13%, var(--sacci-ivory));
     --sacci-text: #183126;
@@ -26,8 +30,8 @@
     --sacci-shadow-panel: 0 10px 24px color-mix(in srgb, var(--sacci-green-deep) 8%, transparent);
     --sacci-shadow-drawer: 18px 0 46px color-mix(in srgb, var(--sacci-green-deep) 20%, transparent);
     --sacci-admin-radius: 18px;
-    --sacci-admin-sidebar: 264px;
-    --sacci-admin-header: 72px;
+    --sacci-admin-sidebar: 252px;
+    --sacci-admin-header: 76px;
     --sacci-admin-primary: var(--sacci-green);
     --sacci-admin-primary-deep: var(--sacci-green-deep);
     --sacci-admin-accent: var(--sacci-gold);
@@ -43,6 +47,10 @@ html:has(body.sacci-island-admin),
 body.sacci-island-admin {
     color-scheme: light !important;
     background: var(--sacci-cream) !important;
+}
+
+html.wp-toolbar {
+    padding-top: 0 !important;
 }
 
 body.sacci-island-admin,
@@ -103,7 +111,7 @@ body.sacci-island-admin {
 body.sacci-island-admin #wpwrap {
     min-height: 100dvh;
     overflow: hidden;
-    background: var(--sacci-cream) !important;
+    background: var(--sacci-shell) !important;
 }
 
 /* =========================================================
@@ -121,24 +129,17 @@ body.sacci-island-admin #wpadminbar {
     width: auto;
     min-width: 0;
     height: var(--sacci-admin-header);
-    padding: 0 16px;
+    padding: 0 18px;
     border: 0;
     color: var(--sacci-text);
-    background: var(--sacci-ivory) !important;
-    box-shadow: none;
+    background: var(--sacci-shell) !important;
+    box-shadow: 0 1px 0 color-mix(in srgb, var(--sacci-green-deep) 8%, transparent);
     font-family: inherit;
     font-size: 13px;
 }
 
 body.sacci-island-admin #wpadminbar::after {
-    content: "";
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: var(--sacci-admin-sidebar);
-    height: 1px;
-    background: var(--sacci-border);
-    pointer-events: none;
+    display: none;
 }
 
 body.sacci-island-admin #wpadminbar .quicklinks {
@@ -174,11 +175,13 @@ body.sacci-island-admin #wpadminbar #wp-admin-bar-top-secondary {
 
 body.sacci-island-admin #wpadminbar #wp-admin-bar-root-default {
     flex: 1 1 auto;
+    overflow: visible;
 }
 
 body.sacci-island-admin #wpadminbar #wp-admin-bar-top-secondary {
     flex: 0 0 auto;
     margin-left: auto;
+    overflow: visible;
 }
 
 body.sacci-island-admin #wpadminbar .quicklinks,
@@ -288,7 +291,7 @@ body.sacci-island-admin #wpadminbar .ab-submenu .ab-item:focus {
 }
 
 body.sacci-island-admin #wp-admin-bar-sacci-sidebar-toggle {
-    margin-right: 10px;
+    margin-right: 8px;
 }
 
 body.sacci-island-admin #wp-admin-bar-sacci-sidebar-toggle > .ab-item {
@@ -297,9 +300,9 @@ body.sacci-island-admin #wp-admin-bar-sacci-sidebar-toggle > .ab-item {
     height: 40px !important;
     place-items: center;
     padding: 0;
-    border: 1px solid var(--sacci-border);
+    border: 0;
     border-radius: 13px;
-    background: var(--sacci-ivory) !important;
+    background: transparent !important;
 }
 
 body.sacci-island-admin .sacci-sidebar-toggle-icon,
@@ -328,11 +331,15 @@ body.sacci-island-admin .sacci-notification-icon svg {
 }
 
 body.sacci-island-admin #wp-admin-bar-sacci-island-brand {
-    margin-right: 14px;
+    flex: 0 1 calc(var(--sacci-admin-sidebar) - 72px);
+    width: calc(var(--sacci-admin-sidebar) - 72px);
+    min-width: 148px;
+    margin-right: 18px;
 }
 
 body.sacci-island-admin #wp-admin-bar-sacci-island-brand > .ab-item {
     display: flex;
+    width: 100%;
     align-items: center;
     padding: 0;
     background: transparent !important;
@@ -340,46 +347,63 @@ body.sacci-island-admin #wp-admin-bar-sacci-island-brand > .ab-item {
 
 body.sacci-island-admin .sacci-adminbar-lockup {
     display: flex;
+    width: 100%;
     align-items: center;
-    gap: 10px;
+    gap: 11px;
     min-width: 0;
 }
 
-body.sacci-island-admin .sacci-adminbar-logo {
-    display: flex;
-    flex: 0 1 224px;
-    width: 224px;
+body.sacci-island-admin .sacci-adminbar-mark {
+    display: grid;
+    flex: 0 0 44px;
+    width: 44px;
     height: 44px;
-    align-items: center;
+    place-items: center;
     overflow: hidden;
+    border-radius: 50%;
+    background: var(--sacci-ivory);
+    box-shadow:
+        0 0 0 1px color-mix(in srgb, var(--sacci-gold) 42%, var(--sacci-border)),
+        0 5px 16px color-mix(in srgb, var(--sacci-green-deep) 10%, transparent);
 }
 
-body.sacci-island-admin .sacci-adminbar-wordmark {
+body.sacci-island-admin .sacci-adminbar-mark img {
     display: block;
-    width: 100% !important;
-    max-width: 224px !important;
+    width: 40px !important;
+    max-width: 40px !important;
     height: 40px !important;
     max-height: 40px !important;
     object-fit: contain !important;
-    object-position: left center;
 }
 
-body.sacci-island-admin .sacci-adminbar-mark {
-    display: none !important;
+body.sacci-island-admin .sacci-adminbar-brand-copy {
+    display: block;
+    overflow: hidden;
+    min-width: 0;
 }
 
-body.sacci-island-admin .sacci-adminbar-context {
-    display: inline-flex;
-    min-height: 28px;
-    align-items: center;
-    padding: 0 9px;
-    border: 1px solid color-mix(in srgb, var(--sacci-gold) 38%, var(--sacci-border));
-    border-radius: 10px;
+body.sacci-island-admin .sacci-adminbar-brand-copy strong,
+body.sacci-island-admin .sacci-adminbar-brand-copy small {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+body.sacci-island-admin .sacci-adminbar-brand-copy strong {
     color: var(--sacci-green-deep);
-    background: color-mix(in srgb, var(--sacci-gold-soft) 55%, var(--sacci-ivory));
-    font-size: 10px;
-    font-weight: 820;
-    letter-spacing: .08em;
+    font-size: 13px;
+    font-weight: 780;
+    line-height: 1.15;
+}
+
+body.sacci-island-admin .sacci-adminbar-brand-copy small {
+    margin-top: 4px;
+    color: var(--sacci-gold);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .07em;
+    line-height: 1.1;
     text-transform: uppercase;
 }
 
@@ -398,7 +422,12 @@ body.sacci-island-admin #wp-admin-bar-sacci-admin-notifications > .ab-item {
 }
 
 body.sacci-island-admin #wp-admin-bar-sacci-admin-search > .ab-item {
-    min-width: 168px;
+    width: min(34vw, 500px);
+    min-width: 280px;
+    justify-content: flex-start;
+    border-color: color-mix(in srgb, var(--sacci-green-deep) 11%, var(--sacci-border));
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--sacci-ivory) 84%, transparent) !important;
 }
 
 body.sacci-island-admin #wp-admin-bar-sacci-admin-notifications > .ab-item {
@@ -459,18 +488,18 @@ body.sacci-island-admin #adminmenuback {
 body.sacci-island-admin #adminmenuwrap {
     position: fixed;
     z-index: 9993;
-    top: 0;
+    top: var(--sacci-admin-header);
     bottom: 0;
     left: 0;
     width: var(--sacci-admin-sidebar);
-    padding-top: var(--sacci-admin-header);
+    padding-top: 0;
     overflow-x: hidden;
     overflow-y: auto;
     border: 0;
-    border-right: 1px solid var(--sacci-border);
+    border-right: 0;
     border-radius: 0;
     color: var(--sacci-text);
-    background: var(--sacci-ivory) !important;
+    background: var(--sacci-shell) !important;
     box-shadow: none;
     opacity: 0;
     pointer-events: none;
@@ -491,7 +520,7 @@ body.sacci-island-admin.sacci-sidebar-open #adminmenuwrap {
 body.sacci-island-admin #adminmenu {
     width: 100%;
     margin: 0;
-    padding: 14px 12px 30px;
+    padding: 18px 14px 30px;
     background: transparent !important;
     font-family: inherit;
 }
@@ -778,10 +807,10 @@ body.sacci-island-admin #wpcontent {
     overflow-x: hidden;
     overflow-y: auto;
     margin: 0;
-    padding: 14px;
+    padding: 18px 20px 20px;
     border: 0;
     color: var(--sacci-text);
-    background: var(--sacci-cream) !important;
+    background: var(--sacci-canvas) !important;
     transition: left 240ms cubic-bezier(.2, .8, .2, 1);
 }
 
@@ -792,11 +821,13 @@ body.sacci-island-admin.sacci-sidebar-open #wpcontent {
 body.sacci-island-admin #wpbody {
     flex: 1 0 auto;
     min-height: auto;
-    padding: 0 28px;
-    border: 1px solid var(--sacci-border);
-    border-radius: 26px;
+    padding: 0 30px;
+    border: 1px solid color-mix(in srgb, var(--sacci-green-deep) 9%, var(--sacci-border));
+    border-radius: 28px;
     background: var(--sacci-ivory) !important;
-    box-shadow: var(--sacci-shadow-panel);
+    box-shadow:
+        0 18px 46px color-mix(in srgb, var(--sacci-green-deep) 9%, transparent),
+        0 2px 8px color-mix(in srgb, var(--sacci-green-deep) 4%, transparent);
 }
 
 body.sacci-island-admin #wpbody-content {
@@ -805,9 +836,10 @@ body.sacci-island-admin #wpbody-content {
 }
 
 body.sacci-island-admin #wpbody-content > .wrap {
-    max-width: 1600px;
+    width: 100%;
+    max-width: none;
     margin: 0;
-    padding-top: 24px;
+    padding-top: 28px;
     color: var(--sacci-text);
 }
 
@@ -937,10 +969,23 @@ body.sacci-island-admin .button,
 body.sacci-island-admin .button-secondary,
 body.sacci-island-admin .button-primary,
 body.sacci-island-admin .page-title-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-height: 38px;
+    padding: 0 16px;
+    border-width: 1px;
+    border-style: solid;
     border-radius: 999px;
+    font-size: 13px;
     font-weight: 700;
-    line-height: 2.25;
+    line-height: 1;
+    text-decoration: none;
+}
+
+body.sacci-island-admin .page-title-action {
+    margin-left: 8px;
+    vertical-align: middle;
 }
 
 body.sacci-island-admin .button-primary,
@@ -1602,16 +1647,17 @@ body.index-php.sacci-island-admin #sacci_parish_dashboard .inside {
 }
 
 @media (max-width: 1220px) {
-    body.sacci-island-admin .sacci-adminbar-logo {
-        flex-basis: 184px;
-        width: 184px;
+    body.sacci-island-admin #wp-admin-bar-sacci-island-brand {
+        min-width: 132px;
+        margin-right: 10px;
     }
 
-    body.sacci-island-admin .sacci-adminbar-wordmark {
-        max-width: 184px !important;
+    body.sacci-island-admin #wp-admin-bar-sacci-admin-search > .ab-item {
+        width: min(30vw, 380px);
+        min-width: 230px;
     }
 
-    body.sacci-island-admin .sacci-adminbar-context {
+    body.sacci-island-admin .sacci-adminbar-brand-copy small {
         display: none;
     }
 
@@ -1631,7 +1677,19 @@ body.index-php.sacci-island-admin #sacci_parish_dashboard .inside {
     }
 
     body.sacci-island-admin #adminmenuwrap {
+        top: var(--sacci-admin-header);
         box-shadow: var(--sacci-shadow-drawer);
+    }
+
+    body.sacci-island-admin #wp-admin-bar-sacci-island-brand {
+        flex-basis: 160px;
+        width: 160px;
+        min-width: 160px;
+    }
+
+    body.sacci-island-admin #wp-admin-bar-sacci-admin-search > .ab-item {
+        width: 230px;
+        min-width: 230px;
     }
 
     .sacci-dashboard-columns {
@@ -1670,23 +1728,28 @@ body.index-php.sacci-island-admin #sacci_parish_dashboard .inside {
         margin-right: 3px;
     }
 
-    body.sacci-island-admin .sacci-adminbar-logo {
+    body.sacci-island-admin #wp-admin-bar-sacci-island-brand {
         flex: 0 0 44px;
         width: 44px;
-        height: 44px;
+        min-width: 44px;
+        margin-right: 4px;
     }
 
-    body.sacci-island-admin .sacci-adminbar-wordmark {
-        display: none !important;
+    body.sacci-island-admin .sacci-adminbar-brand-copy {
+        display: none;
     }
 
     body.sacci-island-admin .sacci-adminbar-mark {
-        display: block !important;
-        width: 42px !important;
-        max-width: 42px !important;
-        height: 42px !important;
-        max-height: 42px !important;
-        object-fit: contain !important;
+        flex-basis: 42px;
+        width: 42px;
+        height: 42px;
+    }
+
+    body.sacci-island-admin .sacci-adminbar-mark img {
+        width: 38px !important;
+        max-width: 38px !important;
+        height: 38px !important;
+        max-height: 38px !important;
     }
 
     body.sacci-island-admin #wp-admin-bar-sacci-admin-search .ab-label,
@@ -1703,9 +1766,9 @@ body.index-php.sacci-island-admin #sacci_parish_dashboard .inside {
     }
 
     body.sacci-island-admin #adminmenuwrap {
-        top: 0;
+        top: var(--sacci-admin-header);
         width: min(86vw, 288px);
-        padding-top: var(--sacci-admin-header);
+        padding-top: 0;
     }
 
     body.sacci-island-admin #wpcontent {
@@ -1715,7 +1778,7 @@ body.index-php.sacci-island-admin #sacci_parish_dashboard .inside {
     }
 
     body.sacci-island-admin #wpbody {
-        padding: 0 16px;
+        padding: 0 18px;
         border-radius: 20px;
     }
 

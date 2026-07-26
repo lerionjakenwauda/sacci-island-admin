@@ -220,21 +220,9 @@
             link.insertAdjacentElement("afterend", button);
             setSubmenuHeight(item);
 
-            /*
-             * A WordPress parent menu item (for example Plugins) duplicates its
-             * landing route as the first child. Treat the parent row as the
-             * accordion control so clicking it never leaves the current screen.
-             * The actual route remains available from the expanded submenu.
-             */
-            link.addEventListener("click", (event) => {
-                event.preventDefault();
-                event.stopPropagation();
-                toggleItem(item);
-            });
-
             button.addEventListener("click", (event) => {
                 event.preventDefault();
-                event.stopPropagation();
+                event.stopImmediatePropagation();
                 toggleItem(item);
             });
 
@@ -248,6 +236,29 @@
                 submenu.querySelector("a[href]")?.focus();
             });
         });
+
+        /*
+         * WordPress and some vendor plugins register their own menu click
+         * handlers before this script runs. Intercept parent links in the
+         * capture phase so a row such as Plugins always toggles its accordion
+         * and can never race another handler into navigating to plugins.php.
+         * The real destination remains the first link inside the submenu.
+         */
+        menu.addEventListener("click", (event) => {
+            const target = event.target;
+            const link = target instanceof Element
+                ? target.closest("li.wp-has-submenu > a.menu-top")
+                : null;
+            const item = link?.parentElement;
+
+            if (!link || !item || !items.includes(item)) {
+                return;
+            }
+
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            toggleItem(item);
+        }, true);
 
         const current = items.find((item) =>
             item.classList.contains("wp-has-current-submenu") ||
@@ -338,7 +349,7 @@
 
             trigger.addEventListener("click", (event) => {
                 event.preventDefault();
-                event.stopPropagation();
+                event.stopImmediatePropagation();
 
                 if (item.classList.contains("sacci-adminbar-menu-open")) {
                     closeMenu(item);
@@ -346,7 +357,7 @@
                 }
 
                 openMenu(item);
-            });
+            }, true);
 
             trigger.addEventListener("keydown", (event) => {
                 if (event.key !== "ArrowDown") {
