@@ -3,7 +3,7 @@
  * Plugin Name: SACCI Parish Administration Suite
  * Plugin URI: https://lerionjakenwauda.com/
  * Description: A responsive island-architecture WordPress admin shell with parish branding, menu customisation, drag ordering, role-based menu visibility, strict route protection and a redesigned dashboard.
- * Version: 2.1.3
+ * Version: 2.1.4
  * Author: Lerion Jake Nwauda Digital Innovations
  * Author URI: https://lerionjakenwauda.com/
  * Text Domain: sacci-island-admin
@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SACCI_ISLAND_VERSION', '2.1.3');
+define('SACCI_ISLAND_VERSION', '2.1.4');
 define('SACCI_ISLAND_FILE', __FILE__);
 define('SACCI_ISLAND_DIR', plugin_dir_path(__FILE__));
 define('SACCI_ISLAND_URL', plugin_dir_url(__FILE__));
@@ -88,6 +88,7 @@ final class SACCI_Island_Admin_Plugin {
             'menu_order',
             'menu_rules',
             'submenu_rules',
+            'route_settings',
         ];
 
         $migrated = $defaults;
