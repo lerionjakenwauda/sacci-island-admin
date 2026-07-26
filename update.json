@@ -1,0 +1,10 @@
+{
+  "name": "SACCI Parish Administration Suite",
+  "version": "2.1.5",
+  "url": "https://github.com/lerionjakenwauda/sacci-island-admin/releases/tag/v2.1.5",
+  "package": "https://github.com/lerionjakenwauda/sacci-island-admin/releases/download/v2.1.5/sacci-island-admin-v2.1.5.zip",
+  "requires": "6.4",
+  "tested": "6.7",
+  "requires_php": "8.0",
+  "body": "Rebuilds the WordPress administration chrome as one connected parish shell, keeps parent menus as true accordions, and adds WordPress-native immediate update discovery with a public release manifest."
+}
